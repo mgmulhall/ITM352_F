@@ -1,0 +1,74 @@
+<script src="products.js">
+
+  /* This is an invoice of the sales data */
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Check-Out</title>
+
+<link href="invoice-style.css" rel="stylesheet">
+
+</head>
+
+<body>
+<table border="4">
+  <tbody>
+    <tr>
+      <th style="text-align: center;" width="20px">Item</th>
+      <th style="text-align: center;" width="20px">Items Available</th>
+      <th style="text-align: center;" width="20px">Quantity</th>
+      <th style="text-align: center;" width="20px">Price</th>
+      <th style="text-align: center;" width="20px">Extended Price</th>
+    </tr>
+
+      <tr>
+          <td colspan="4" width="100%">&nbsp;</td>
+      </tr>
+
+    
+      <tr>
+          <td style="text-align: center;" colspan="3" width="67%">Sub-total</td>
+          <td width="54%">$
+              <script>document.write(subtotal.toFixed(2));</script>
+          </td>
+      </tr>
+
+      <tr>
+          <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: arial;">Tax @
+                  <script>document.write(100 * tax_rate);</script>%
+              </span></td>
+          <td width="54%">$
+              <script>document.write(tax.toFixed(2));</script>
+          </td>
+      </tr>
+
+      <tr>
+          <td style="text-align: center;" colspan="3" width="67%">Shipping</td>
+          <td width="54%">$
+              <script>document.write(shipping.toFixed(2));</script>
+          </td>
+      </tr>
+
+      <tr>
+          <td style="text-align: center;" colspan="3" width="67%"><strong>Total</strong></td>
+          <td width="54%"><strong>$
+                  <script>document.write(total.toFixed(2));</script>
+              </strong></td>
+      </tr>
+  </tbody>
+</table>
+<div>
+  <br><b>
+    OUR SHIPPING POLICY IS:A subtotal $0 - $49.99 will be $2 shipping
+    A subtotal $50 - $99.99 will be $5 shipping
+    Subtotals over $100 will be charged 5% of the subtotal amount
+  </b> </div>
+</body>
+
+</html>
