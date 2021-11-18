@@ -28,7 +28,7 @@
         }
         else
         {
-            if(inputstring < 0) errors.push('Negative value!'); // Check if it is non-negative, if not say "Negative value!"
+            if(inputstring < 0) errors.push('<font color="red">Negative value!<font color="red>'); // Check if it is non-negative, if not say "Negative value!"
             if(parseInt(inputstring) != inputstring) errors.push('Not an integer!'); // Check that it is an integer, if not say "Not an integer!"
         }          
         return returnErrors ? errors : (errors.length == 0); // if there are no errors , errors.length ==0, proceed to nect validation
@@ -44,8 +44,8 @@
      
      
     // Show the sweatshirt store using GET
-     app.get("sweatshirt_store.html", function (request, response) {
-        var contents = fs.readFileSync('./views/sweatshirt_store.html', 'utf8');
+     app.get("/index", function (request, response) {
+        var contents = fs.readFileSync('./views/index.html', 'utf8');
         response.send(eval('`' + body + '`')); // render template string
      
         // get product data from product_data.js and display it on the sweatshirt page
@@ -54,7 +54,7 @@
         // loop to generate the products
         for (i = 0; i < products.length; i++) {
             str += `
-            <section class ="items">
+            <section class ="item">
             <h2>${products[i].type}</h2>
             <h3 label id ="quantity_available${i}"><i>Only ${products[i].quantity_available} Left!</i></h3></label>
             <h4>$${products[i].price.toFixed(2)}</h4>
@@ -63,7 +63,7 @@
             <input type="text" placeholder="0" name="quantity${i}" onkeyup="checkQuantityTextbox(this);">
             </section>`;
      
-            // Apply validation( the NonNegInt and checkQuantityTextbox functions)
+            // Apply validation(the NonNegInt and checkQuantityTextbox functions)
             if (typeof req.query['purchase_submit'] != 'undefined') {
        
                 for (i = 0; i < products.length; i++) {

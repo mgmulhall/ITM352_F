@@ -1,7 +1,31 @@
 <!--Code adapted from Smartphone Products 3 WOD by Maggie Mulhall-->
 
 <script src="./products_data.js"></script>
-<script src="./server.js"></script>
+<script>
+    function isNonNegInt(inputstring, returnErrors = false) {
+        errors = []; // assume no errors at first
+        if(Number(inputstring) != inputstring) {
+            errors.push('Not a number!'); // Check if string is a number, if not say "Not a number!"
+        }
+        else
+        {
+            if (inputstring ==0) errors.push('<font color="red">Enter a Number!</font>');
+            if(inputstring < 0) errors.push('Negative value!'); // Check if it is non-negative, if not say "Negative value!"
+            if(parseInt(inputstring) != inputstring) errors.push('Not an integer!'); // Check that it is an integer, if not say "Not an integer!"
+        }          
+        return returnErrors ? errors : (errors.length == 0); // if there are no errors , errors.length ==0, proceed to nect validation
+    }
+     
+    // Checks Quantity textbox for validation errors
+    function checkQuantityTextbox(theTextbox) {
+        errors = isNonNegInt(theTextbox.value, true);
+        if (errors.length == 0) errors = ['You want:']; //if there are no errors, "You want:*requested amount*
+        if (theTextbox.value.trim() == '') errors = ['Please type quantity desired: '];// if there are no requested amounts, ask for amount
+        document.getElementById(theTextbox.name + '_label').innerHTML = errors.join('<font color="red">, </font>');
+    }    
+
+</script>
+
 <html>
     
 <head>
