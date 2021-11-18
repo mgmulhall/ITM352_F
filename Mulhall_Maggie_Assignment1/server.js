@@ -44,14 +44,14 @@
      
      
     // Show the sweatshirt store using GET
-     app.get("/index", function (request, response) {
+     app.get("index", function (request, response) {
         var contents = fs.readFileSync('./views/index.html', 'utf8');
         response.send(eval('`' + body + '`')); // render template string
      
         // get product data from product_data.js and display it on the sweatshirt page
     function display_products() {
         str = ''; // start with nothing
-        // loop to generate the products
+        // loop to generate the products 
         for (i = 0; i < products.length; i++) {
             str += `
             <section class ="item">
@@ -88,7 +88,7 @@
     }
     });
      
-    app.POST("/process_invoice", function (request, response, next) {
+    app.post("/process_invoice", function (request, response, next) {
     let POST = request.body;
     if(typeof POST['purchase_submit'] == 'undefined') { // Checks if there is a quantity in the txtbox
         console.log('Nothing selected'); // Sends message to user if there is not any quantity inputed

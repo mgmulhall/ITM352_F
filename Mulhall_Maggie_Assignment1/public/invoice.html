@@ -34,10 +34,10 @@ app.get('invoice.html', function(req, res, next) {
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Sweatshirt Invoice</title>
 
-      <!--<link href="invoice_style.css" rel="stylesheet">-->
+      <link href="invoice_style.css" rel="stylesheet">
       <!--link invoice style sheet to invoice html-->
+      <title>Invoice</title>
 
     </head>
     
@@ -87,7 +87,7 @@ app.get('invoice.html', function(req, res, next) {
        //Compute grand total
        var total = subtotal + tax + shipping;
 
-
+//create table
           </script>
   <tr>
     <td colspan="4" width="100%">&nbsp;</td>
@@ -118,12 +118,13 @@ app.get('invoice.html', function(req, res, next) {
         </tbody>
       </table>
       <div>
+        <!--display shipping policy-->
         <br><b>
           OUR SHIPPING POLICY IS:A subtotal $0 - $49.99 will be $2 shipping
       A subtotal $50 - $99.99 will be $5 shipping
       Subtotals over $100 will be charged 5% of the subtotal amount.
         </b> </div>
-        <!--<input type="button" class="button" value="Back to Home" onclick="window.location.href = 'products_display.html';">-->
+        <input type="button" class="button" value="Back to Home" onclick="window.location.href = 'products_display.html';">
     </body>
     
     </html>
