@@ -10,21 +10,18 @@
     var fs = require('fs');
      
       //get product data from products.js file
-    var products = require("./public/product_data");
+    var products = require("./public/product_data.js");
     var app = express();
      
     // monitor all requests
-    app.all('*', function (request, response, next) {
-        console.log(request.method + ' to ' + request.path);
-        next();
-     });
-     app.use(myParser.urlencoded({"extended":true}));
+    app.use(myParser.urlencoded({ extended: true}));
+
      
     // process purchase request
      
     // Validate the requested qantity is a non negative integer. Loop adapted from inclass labs
      
-    /*function isNonNegInt(inputstring, returnErrors = false) {
+    function isNonNegInt(inputstring, returnErrors = false) {
         errors = []; // assume no errors at first
         if(Number(inputstring) != inputstring) {
             errors.push('Not a number!'); // Check if string is a number, if not say "Not a number!"
@@ -43,12 +40,12 @@
         if (errors.length == 0) errors = ['You want:']; //if there are no errors, "You want:*requested amount*
         if (theTextbox.value.trim() == '') errors = ['Please type quantity desired: '];// if there are no requested amounts, ask for amount
         document.getElementById(theTextbox.name + '_label').innerHTML = errors.join('<font color="red">, </font>');
-    }*/      
+    }    
      
      
     // Show the sweatshirt store using GET
-     /*app.get("./sweatshirt_store", function (request, response) {
-        var contents = fs.readFileSync('./public/sweatshirt_store.html', 'utf8');
+     app.get("/sweatshirt_store", function (request, response) {
+        var contents = fs.readFileSync('./views/sweatshirt_store.html', 'utf8');
         response.send(eval('`' + body + '`')); // render template string
      
         // get product data from product_data.js and display it on the sweatshirt page
@@ -147,7 +144,7 @@
         return str;
     }
  
-});*/
+});
  
 app.use(express.static('./public'));
  
