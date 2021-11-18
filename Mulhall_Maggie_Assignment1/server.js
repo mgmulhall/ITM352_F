@@ -88,7 +88,7 @@
     }
     });
      
-    app.post("/process_invoice", function (request, response, next) {
+    app.POST("/process_invoice", function (request, response, next) {
     let POST = request.body;
     if(typeof POST['purchase_submit'] == 'undefined') { // Checks if there is a quantity in the txtbox
         console.log('Nothing selected'); // Sends message to user if there is not any quantity inputed
