@@ -1,5 +1,6 @@
 // code adapted from template given in assignmnet 1 instructions.
- 
+// I worked with Nathaniel Moylan and Krizel 
+
 //Routing
  
     //require the use of express to start server
@@ -13,16 +14,20 @@
     var products = require("./public/product_data.js");
     var app = express();
      
-    // monitor all requests
-    app.use(myParser.urlencoded({ extended: true}));
+    var querystring = require("querystring");
+    const{request} = require('express');
+    const qs = require('qs');
 
+    // monitor all requests
+    app.all('*', function (request, response, next) { // Links to my request POST
+        console.log(request.method + ' to ' + request.path); // Write the request method in the console and path
+        next(); 
      
-    // process purchase request
-     
-    // Validate the requested qantity is a non negative integer. Loop adapted from inclass labs
+ // Validation
+    // Non negative integer- Loop adapted from inclass labs
      
     function isNonNegInt(inputstring, returnErrors = false) {
-        errors = []; // assume no errors at first
+        errors = []; // assume no errors
         if(Number(inputstring) != inputstring) {
             errors.push('Not a number!'); // Check if string is a number, if not say "Not a number!"
         }
@@ -30,25 +35,40 @@
         {
             if(inputstring < 0) errors.push('<font color="red">Negative value!<font color="red>'); // Check if it is non-negative, if not say "Negative value!"
             if(parseInt(inputstring) != inputstring) errors.push('Not an integer!'); // Check that it is an integer, if not say "Not an integer!"
+            if(inputstring > 45) errors.push ('Not Enough In Stock') ; //Check if requested amount ordered is available
         }          
-        return returnErrors ? errors : (errors.length == 0); // if there are no errors , errors.length ==0, proceed to nect validation
+        return returnErrors ? errors : (errors.length == 0); // if there are no errors , errors.length ==0, proceed
     }
-     
+
+
     // Checks Quantity textbox for validation errors
     function checkQuantityTextbox(theTextbox) {
         errors = isNonNegInt(theTextbox.value, true);
         if (errors.length == 0) errors = ['You want:']; //if there are no errors, "You want:*requested amount*
-        if (theTextbox.value.trim() == '') errors = ['Please type quantity desired: '];// if there are no requested amounts, ask for amount
-        document.getElementById(theTextbox.name + '_label').innerHTML = errors.join('<font color="red">, </font>');
+        if (theTextbox.value.trim() == '') errors = ['How Many Would You Like?'];// if there are no requested amounts, ask for amount
+        document.getElementById(theTextbox.name + '_label').innerHTML = errors.join('<font color="red">, </font>'); //make error alters red
     }    
      
-     
-    // Show the sweatshirt store using GET
-     app.get("index", function (request, response) {
+app.use(myParser.urlencoded({ extended: true })); //makes json into js usable code
+
+// Show the sweatshirt store
+app.post('/process_invoice', function (request, response, next) {
+    var errors={};
+    
+// if inputed values are valid, procees to invoic, if not try again
+    if(Object.keys(errors).length == 0) {
+        response.redirect('./invoice.html?'+ qs.stringify(request.body)); //move to invoice page if no errors
+    }else{
+        response.redirect('./index?'+ qs.stringify(request.body));
+    }
+    });
+
+    // request contents from index
+     app.get("/index", function (request, response, next) {
         var contents = fs.readFileSync('./views/index.html', 'utf8');
         response.send(eval('`' + body + '`')); // render template string
      
-        // get product data from product_data.js and display it on the sweatshirt page
+// get product data from product_data.js and display it on the sweatshirt page
     function display_products() {
         str = ''; // start with nothing
         // loop to generate the products 
@@ -69,7 +89,7 @@
                 for (i = 0; i < products.length; i++) {
                     if (params.has(`quantity${i}`)) {
                         a_qty = params.get(`quantity${i}`);
-                        // make textboxes sticky in case of invalid data
+                        // make textboxes sticky in case of errors
                         product_selection_form[`quantity${i}`].value = a_qty;
                         total_qty += a_qty;
                         if (!isNonNegInt(a_qty)) {
@@ -88,7 +108,7 @@
     }
     });
      
-    app.post("/process_invoice", function (request, response, next) {
+    /*app.post("/process_invoice", function (request, response, next) {
     let POST = request.body;
     if(typeof POST['purchase_submit'] == 'undefined') { // Checks if there is a quantity in the txtbox
         console.log('Nothing selected'); // Sends message to user if there is not any quantity inputed
@@ -98,8 +118,7 @@
     console.log(Date.now() + ': Purchase made from ip ' + request.ip + ' data: ' + JSON.stringify(POST));
      
     var contents = fs.readFileSync('./public/invoice.html', 'utf8');
-    response.send("Heres an Invoice");
-    //response.send(eval('`' + contents + '`')); // render template string
+    response.send(eval('`' + contents + '`'));// render template string
      
     // adapted from Inoice 4 WOD by Maggie Mulhall based on Professor Port screan cast for Invoice 4
     function display_invoice_table_rows() { //loop for invoice table
@@ -145,7 +164,7 @@
         return str;
     }
  
-});
+});*/
  
 app.use(express.static('./public'));
  

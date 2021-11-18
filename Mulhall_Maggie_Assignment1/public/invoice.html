@@ -1,11 +1,11 @@
-<script src="./product_data.js"></script>
+<script src="./products_data.js"></script>
 
-app.get('invoice.html', function(req, res, next) {
+<!--app.get('invoice.html', function(req, res, next) {
   if(typeof req.query['purchase_submit'] != 'undefined') {
       console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
   }
   next();
-});
+});-->
 
 <!--app.use(express.static('./static'));-->
 
@@ -127,4 +127,4 @@ app.get('invoice.html', function(req, res, next) {
         <input type="button" class="button" value="Back to Home" onclick="window.location.href = 'products_display.html';">
     </body>
     
-    </html>
+    </html
