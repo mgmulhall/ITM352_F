@@ -98,7 +98,8 @@
     console.log(Date.now() + ': Purchase made from ip ' + request.ip + ' data: ' + JSON.stringify(POST));
      
     var contents = fs.readFileSync('./public/invoice.html', 'utf8');
-    response.send(eval('`' + contents + '`')); // render template string
+    response.send("Heres an Invoice");
+    //response.send(eval('`' + contents + '`')); // render template string
      
     // adapted from Inoice 4 WOD by Maggie Mulhall based on Professor Port screan cast for Invoice 4
     function display_invoice_table_rows() { //loop for invoice table
