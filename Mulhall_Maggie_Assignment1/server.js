@@ -44,7 +44,7 @@
      
      
     // Show the sweatshirt store using GET
-     app.get("/sweatshirt_store", function (request, response) {
+     app.get("sweatshirt_store.html", function (request, response) {
         var contents = fs.readFileSync('./views/sweatshirt_store.html', 'utf8');
         response.send(eval('`' + body + '`')); // render template string
      
