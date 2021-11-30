@@ -1,16 +1,10 @@
-<script src="./products_data.js"></script>
+<script src="./product_data.js"></script>
+ 
+<!-- link to invoice page with purchase button-->
 
-<!--app.get('invoice.html', function(req, res, next) {
-  if(typeof req.query['purchase_submit'] != 'undefined') {
-      console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query));
-  }
-  next();
-});-->
-
-<!--app.use(express.static('./static'));-->
-
-  <!-- This is an invoice was adapted from My Invoice 4 and Xinfei Li's Invoice 3 on the ITM352_Fall21 github page--> 
-
+ 
+  <!-- This is an invoice was adapted from My Invoice 4 and Xinfei Li's Invoice 3 on the ITM352_Fall21 github page-->
+ 
   <script>
       let params = (new URL(document.location)).searchParams;
       var quantities = [];//create an empty array of quantities to loop through
@@ -20,27 +14,27 @@
           if (params.has(`quantity${i}`)) {
             a_qty = params.get(`quantity${i}`);
             quantities[i] = a_qty;
-          }// if there is a subbmitted quantity ordered, put it in the quantites array
+          }// if there is a submitted quantity ordered, put it in the quantites array
         }
       } else {
         document.write('no form submitted');// if no quantity, say no from submitted
       }
       console.log(quantities);
     </script>
-    
+   
     <!DOCTYPE html>
   <html lang="en">
   <head>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+ 
       <link href="invoice_style.css" rel="stylesheet">
       <!--link invoice style sheet to invoice html-->
       <title>Invoice</title>
-
+ 
     </head>
-    
+   
     <body>
       <table border="2">
         <tbody>
@@ -51,29 +45,11 @@
             <th style="text-align: center;" width="54%">Extended Price</th>
           </tr>
           <script>
-            subtotal=0; //begin with a subtotal of zero
-            
-            for (i = 0; i < products.length; i++) {
-            if (quantities[i] > 0) {
-              // product row
-              extended_price = quantities[i] * products[i].price //decalre extended price as sum of price and quantity ordered
-              subtotal += extended_price; //add each extended price to subtotal and make it the new subtotal
-              //feed data into table 
-              document.write(`
-        <tr> 
-          <td width="43%">${products[i].name}</td> 
-          <td align="center" width="11%">${quantities[i]}</td>
-          <td width="13%">\$${products[i].price}</td>
-          <td width="54%">\$${extended_price}</td>
-        </tr>
-        `);
-            }
-          }
-  
+            display_invoice_table_rows()
        //Compute tax
        var tax_rate = 0.0575;
        var tax = tax_rate*subtotal;
-  
+ 
        //Compute shipping
        if(subtotal <= 50) {
          shipping =2;
@@ -86,8 +62,6 @@
       }
        //Compute grand total
        var total = subtotal + tax + shipping;
-
-//create table
           </script>
   <tr>
     <td colspan="4" width="100%">&nbsp;</td>
@@ -99,7 +73,7 @@
     </td>
   </tr>
   <tr>
-    <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: Lucida Bright;">Tax @ 
+    <td style="text-align: center;" colspan="3" width="67%"><span style="font-family: Lucida Bright;">Tax @
       <script>document.write(100*tax_rate);</script>%</span></td>
     <td width="54%">$
       <script>document.write(tax.toFixed(2));</script>
@@ -124,7 +98,7 @@
       A subtotal $50 - $99.99 will be $5 shipping
       Subtotals over $100 will be charged 5% of the subtotal amount.
         </b> </div>
-        <input type="button" class="button" value="Back to Home" onclick="window.location.href = 'products_display.html';">
+        <input type="button" class="button" value="Go Back" onclick="window.location.href = 'index.html';">
     </body>
-    
-    </html
+   
+    </html>
