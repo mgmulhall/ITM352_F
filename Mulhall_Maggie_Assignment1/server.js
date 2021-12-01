@@ -3,6 +3,7 @@ var app = express();
 var myParser = require("body-parser");
 //var fs = require('fs');
 var data = require('./public/product_data.js');
+const querystring = require('qs');
 var products = data.products;
 
 //connect server to all files in directory 
@@ -24,29 +25,46 @@ function checkQuantityTextbox(theTextbox) {
 // check if the value entered if valid and in stock
 function isNonNegInt(inputstring, returnErrors = false) {
     errors = []; // assume no errors at first
-    if(Number(inputstring) != inputstring) {
+    numberstring=Number(inputstring);
+    if(numberstring != inputstring) {
         errors.push('<font color="red">Not a Number!</font>'); // Check if string is a number, if not say "Not a number!"
     }
     else
     {
-        if (inputstring ==0) errors.push('<font color="red">You Need More Than That!</font>');
-        if(inputstring < 0) errors.push('<font color="red">Negative Value!</font>'); // Check if it is non-negative, if not say "Negative value!"
+        if (numberstring ==0) errors.push('<font color="red">You Need More Than That!</font>');
+        if(numberstring < 0) errors.push('<font color="red">Negative Value!</font>'); // Check if it is non-negative, if not say "Negative value!"
         if(parseInt(inputstring) != inputstring) errors.push('<font color="red">Not an integer!</font>'); // Check that it is an integer, if not say "Not an integer!"
-        if (inputstring > products[i].quantity_availaible) errors.push('<font color="red">Not Enough In Stock!</font>'); // check if the requested amount is in stock
+        if (numberstring > products[i].quantity_availaible) errors.push('<font color="red">Not Enough In Stock!</font>'); // check if the requested amount is in stock
     }          
     return returnErrors ? errors : (errors.length == 0); // if there are no errors , errors.length ==0, proceed to next validation
 }
 
-
 app.use(myParser.urlencoded({ extended: true }));
 
 // if there are no errors, display inovice table when you click purchase
-function check_out()
-if (errors.length = 0) 
+//function check_out(){
+//if (errors.length = 0) 
 app.post("/process_form", function (request, response){
-    display_invoice_table_rows(request.body, response);
-    response.send(request.body);
+    request_post=request.body;
+    values_okay= true;
+    //if the elements in request body dont pass the non neg int test, values are not okay
+    for (i in request_post){
+        elem = request_post["quantity"+i];
+        if (isNonNegInt(elem)!=true){
+            values_okay=false;
+        }
+    }
+    if (values_okay==true){
+        //add values to querysting
+        querystring = "";
+        for(i in request.post){
+            querystring.concat(i)
+        };
+        response.redirect("/invoice.html" +"?"+querystring);
+    }
 });
+//display_invoice_table_rows(request.body, response);;
+
 
 //loop for invoice table if input passed both validations
 function display_invoice_table_rows(inputstring) {
