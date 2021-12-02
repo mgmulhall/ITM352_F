@@ -108,11 +108,6 @@ const { response } = require('express');
     next(); // Continue
 });*/
 
-//link purchas button to login page
-let butt = document.getElementById('purchasebutton')
-butt.addEventListener("click",() => {
-    window.location.assign("login.html");
-});
 
 let user_data;
 if (existsSync("user_data.json")) {
@@ -126,54 +121,60 @@ if (existsSync("user_data.json")) {
     };
 }
 
-createServer(async (req, res) => {
-    const parsed = parse(req.url, true);
+//if the file exists, read it and store contents in variable data
+if (fs.existsSync(filename)) {
+    data = fs.readFileSync(filename, 'utf-8');
+//make data javascript (parse it) into varible user_data
+    user_data = JSON.parse(data);
+    console.log("User_data=", user_data);
 
-    if (parsed.pathname === '/register') {
-        let body = '';
-        req.on('data', data => body += data);
-        req.on('end', () => {
-            const data = JSON.parse(body);
-            user_data.username.push({
-                name: data.name,
-                password: data.password,
-                email: data.email
-            });
-            
-            writeFile("user_data.json", JSON.stringify(user_data), err => {
-                if (err) {
-                    console.err(err);
-                } else res.end();
-            });
-        });
-    } else {
-        // If the client did not request an API endpoint, we assume we need to fetch a file.
-        // This is terrible security-wise, since we don't check the file requested is in the same directory.
-        // This will do for our purposes.
-        const filename = parsed.pathname === '/' ? "1index.html" : parsed.pathname.replace('/', '');
-        if (existsSync(path)) {
-            if (filename.endsWith("html")) {
-                res.writeHead(200, {"Content-Type" : "text/html"});
-            } else if (filename.endsWith("css")) {
-                res.writeHead(200, {"Content-Type" : "text/css"});
-            } else if (filename.endsWith("js")) {
-                res.writeHead(200, {"Content-Type" : "text/javascript"});
-            } else {
-                res.writeHead(200);
-            }
- 
-            res.write(readFileSync(path));
-            res.end();
-        } else {
-            res.writeHead(404);
-            res.end();
-        }
-    }
-}).listen(8080);
-
-
-
-
-
+    fileStats = fs.statSync(filename);
+    console.log("File " + filename + " has " + fileStats.size + " characters");
+} else {
+    console.log(filename+"is not a file");
+}
 
 app.use(express.urlencoded({ extended: true })); //allow a post request from URL to save data to request body.
+
+app.get("/login", function(request, response){
+    //this simple log in form needs to be my login.html
+    str =`<body>
+    <form action"/login" method="POST">
+    <input type = "text" name ="" placeholder= "Username" required><br />
+    <input type= "password" name="" placeholder= "Password" required><br />
+    <button id="but" type="submit" class="btn">Login</button>
+    </form>
+    </body> 
+    `;
+    response.send(str)
+});
+
+app.post("/login", function (request, response){
+    console.log("Got a POST to login");
+    POST = request.body;
+
+    user_name = POST["username"];
+    user_pass = POST["password"];
+    console.log("User name="+ user_name + " Password="+ user_pass);
+    if (user_data[user_name] != undefined) {
+        if (user_data[user_name].password == user_pass){
+            response.redirect("invoice.html");
+        } else {
+            response.send("Invalid Login");
+        }
+    } else {
+        response.send("Bad Username");
+    }
+
+});
+
+
+//create file
+//fs.writeFileSync(filename, user_data, "utf-8");
+
+// add new inputted user data to user_data.json
+//fs.appendFileSync(filename, data, "utf-8");
+
+// handles request for any static files
+app.use(express.static('./public'));
+app.listen(8080, () => console.log(`listening on port 8080`));

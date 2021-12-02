@@ -1,10 +1,5 @@
 //Krizel Tomines 
 //Author: Kazman/Port & WODS & Labs
-import {createServer} from 'http';
-import {parse} from 'url';
-import {join} from 'path';
-import {writeFile, readFileSync, existsSync, fstat} from 'fs';
-
 
 var express = require('express'); //code for server
 var qs = require('querystring');
@@ -107,73 +102,126 @@ const { response } = require('express');
     console.log(require.method + ' to ' + require.path); // Write the request method in the console and path
     next(); // Continue
 });*/
+//if the file exists, read it and store contents in variable data
+if (fs.existsSync(filename)) {
+    data = fs.readFileSync(filename, 'utf-8');
+//make data javascript (parse it) into varible user_data
+    user_data = JSON.parse(data);
+    console.log("User_data=", user_data);
 
-//link purchas button to login page
-let butt = document.getElementById('purchasebutton')
-butt.addEventListener("click",() => {
-    window.location.assign("login.html");
-});
-
-let user_data;
-if (existsSync("user_data.json")) {
-    user_data = JSON.parse(readFileSync("user_data.json"));
+    fileStats = fs.statSync(filename);
+    console.log("File " + filename + " has " + fileStats.size + " characters");
 } else {
-    user_data = {
-        "username": {
-            name:"",
-            password:"",
-            email:""}
-    };
+    console.log(filename+"is not a file");
 }
 
-createServer(async (req, res) => {
-    const parsed = parse(req.url, true);
-
-    if (parsed.pathname === '/register') {
-        let body = '';
-        req.on('data', data => body += data);
-        req.on('end', () => {
-            const data = JSON.parse(body);
-            user_data.username.push({
-                name: data.name,
-                password: data.password,
-                email: data.email
-            });
-            
-            writeFile("user_data.json", JSON.stringify(user_data), err => {
-                if (err) {
-                    console.err(err);
-                } else res.end();
-            });
-        });
-    } else {
-        // If the client did not request an API endpoint, we assume we need to fetch a file.
-        // This is terrible security-wise, since we don't check the file requested is in the same directory.
-        // This will do for our purposes.
-        const filename = parsed.pathname === '/' ? "1index.html" : parsed.pathname.replace('/', '');
-        if (existsSync(path)) {
-            if (filename.endsWith("html")) {
-                res.writeHead(200, {"Content-Type" : "text/html"});
-            } else if (filename.endsWith("css")) {
-                res.writeHead(200, {"Content-Type" : "text/css"});
-            } else if (filename.endsWith("js")) {
-                res.writeHead(200, {"Content-Type" : "text/javascript"});
-            } else {
-                res.writeHead(200);
-            }
- 
-            res.write(readFileSync(path));
-            res.end();
-        } else {
-            res.writeHead(404);
-            res.end();
-        }
-    }
-}).listen(8080);
-
-
-
-
-
-
 app.use(express.urlencoded({ extended: true })); //allow a post request from URL to save data to request body.
+
+app.get("/login", function(request, response){
+    //this simple log in form needs to be my login.html
+    str =`<body>
+    <form action"/login" method="POST">
+    <input type = "text" name ="" placeholder= "Username" required><br />
+    <input type= "password" name="" placeholder= "Password" required><br />
+    <button type="submit" class="btn">Login</button>
+    </form>
+    </body> 
+    `;
+    response.send(str)
+});
+
+app.post("/login", function (request, response){
+    console.log("Got a POST to login");
+    POST = request.body;
+
+    user_name = POST["username"];
+    user_pass = POST["password"];
+    console.log("User name="+ user_name + " Password="+ user_pass);
+    if (user_data[user_name] != undefined) {
+        if (user_data[user_name].password == user_pass){
+            response.redirect("invoice.html");
+        } else {
+            response.send("Invalid Login");
+        }
+    } else {
+        response.send("Bad Username");
+    }
+
+});
+
+
+/* for registration; author: reece nagaoka */
+ /* wont work !!!*/
+ app.post("./register", function (request, response) {
+    var new_errors = {};
+
+     /* Process a simple register form */
+    /* Make it so capitalization is irrelevant for usernames */
+    var new_username = request.body['username'].toLowerCase();
+
+
+    // Requires usernames to be letters and numbers 
+    if (/^[0-9a-zA-Z]+$/.test(request.body.username)) {
+     }
+    else {
+    errors.push('Letters And Numbers Only for Username')
+     }
+
+    /* Require a unique username */
+    if (typeof user_data[new_username] != 'undefined') {
+        new_errors['username'] = 'Username is already taken.'
+    }
+
+    /* Require a minimum of 4 characters and no more than 10 */
+    if(request.body.password.length < 6) {
+        new_errors['password'] = 'You must enter a minimum of 6 characters.'
+    }
+
+    /* Confirm that both passwords were entered correctly */
+    if(request.body.password !== request.body.repeat_password) {
+        new_errors['repeat_password'] = 'Both passwords must match'
+    }
+
+    /* If new_errors is empty */
+    if (JSON.stringify(new_errors) == '{}') {
+        /* Write data and send to invoice.html */
+        user_data[new_username] = {};
+        user_data[new_username].name = request.body.name;
+        user_data[new_username].password = request.body.password;
+        user_data[new_username].email = request.body.email;
+
+        /* Writes user information into file */
+        fs.writeFileSync(filename, JSON.stringify(user_data));
+
+
+    /* Require a specific email format */
+    if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(request.body.email) == false) {
+        new_errors['email'] = 'Please enter a valid email address'
+    }
+        /* Add username and email to query */
+        request.query['username'] = request.body.username;
+        request.query['email'] = user_data[new_username].email;
+        response.redirect('./invoice.html?' + qs.stringify(request.query));
+        return;
+    }
+    else {
+        /* Put errors and registration data into query */
+        request.query['reg_errors'] = JSON.stringify(new_errors);
+        request.query['reg_data'] = JSON.stringify(request.body);
+        response.redirect(`./register.html?` + qs.stringify(request.query));
+    }
+});
+
+// handles request for any static files
+app.use(express.static('./public'));
+app.listen(8080, () => console.log(`listening on port 8080`));
+
+//create file
+//fs.writeFileSync(filename, user_data, "utf-8");
+
+// add new inputted user data to user_data.json
+//fs.appendFileSync(filename, data, "utf-8");
+
+// handles request for any static files
+app.use(express.static('./public'));
+app.listen(8080, () => console.log(`listening on port 8080`));

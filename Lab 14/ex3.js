@@ -55,7 +55,7 @@ app.post("/login", function (request, response) {
             response.send("Got a good login");
         } else {
             // Bad login, redirect
-            response.send("Sorry bud");
+            response.send("Bad password");
         }
     } else {
         // Bad username
@@ -95,6 +95,7 @@ app.post("/register", function (request, response) {
     user_data[user_name].password = user_pass;
     user_data[user_name].email = user_email;
 
+    //write new data into user_data.json
     data = JSON.stringify(user_data);
     fs.writeFileSync(filename, data, "utf-8");
 

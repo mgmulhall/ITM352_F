@@ -108,11 +108,6 @@ const { response } = require('express');
     next(); // Continue
 });*/
 
-//link purchas button to login page
-let butt = document.getElementById('purchasebutton')
-butt.addEventListener("click",() => {
-    window.location.assign("login.html");
-});
 
 let user_data;
 if (existsSync("user_data.json")) {

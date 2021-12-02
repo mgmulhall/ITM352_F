@@ -1,0 +1,87 @@
+<!-- Author: CodingLab - www.codinglabweb.com & Peter C & Nate M. -->
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="register.css" rel="stylesheet" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <div class="container">
+    <div class="title">Register Here!</div>
+    <div class="content">
+      <form action="#">
+        <div class="user-details">
+
+          <!---Full Name--->
+          <div class="input-box">
+            <span class="details">Full Name</span>
+            <input type="text" placeholder="Enter your name" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+" required
+              title="Minimum: 5 Characters. Maximum: 10 Characters. Numbers and/or Letters Only.">
+          </div>
+
+          <!---Username--->
+          <div class="input-box">
+            <span class="details">Username</span>
+            <input type="text" placeholder="Enter your username" pattern=".[a-z0-9]{3,10}" required>
+          </div>
+
+          <!---Email--->
+          <div class="input-box">
+            <span class="details">Email</span>
+            <input type="email" placeholder="Enter your email" pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]{3,}$" required>
+          </div>
+
+          <!---Password--->
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="password" placeholder="Enter your password" id="typepass" pattern=".{6,}" required title="Minimum: 5 Characters" <input onclick="Toggle()">
+            <b>Click on textbox to show or hide password</b>
+            <script>
+            //allows password to be shown when clicked on
+              function Toggle() {
+                var temp = document.getElementById("typepass");
+                if (temp.type === "password") {
+                  temp.type = "text";
+                }
+                else {
+                  temp.type = "password";
+                }
+              }
+            </script>
+          </div>
+
+          <!---Confirm Password--->
+          <div class="input-box">
+            <span class="details">Confirm Password</span>
+            <input type="password" placeholder="Confirm your password" id="typepass"  pattern=".{6,}" required title="Minimum: 5 Characters" <input onclick="Toggle()">
+            <b>Click on textbox to show or hide password</b>
+            <script>
+            //allows password to be shown when clicked on
+              function Toggle() {
+                var temp = document.getElementById("typepass");
+                if (temp.type === "password") {
+                  temp.type = "text";
+                }
+                else {
+                  temp.type = "password";
+                }
+              }
+            </script>
+          </div>
+        </div>
+
+        <!---Submit button--->
+        <div class="button">
+          <input type="submit" value="Register">
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>
