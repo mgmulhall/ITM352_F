@@ -95,7 +95,6 @@ app.post('/process_invoice', function (request, response, next) {
 
 
 //if login is valid, bring them to invoice; from Lab 14 Ex3.js
-//NEED TO FIX; trying to have login button request contents of user.json
 app.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     console.log("Got a POST to login");
