@@ -83,11 +83,13 @@ app.all('*', function (request, response, next) {
     next();
 });
 
+
+//brin data from store page to login
 app.post('/process_invoice', function (request, response, next) {
     //to validate data
     // error bag
-    var orders = request.body;
-    var string_orders= new URLSearchParams(orders);
+    var orders = request.body["quantity"];
+    string_orders= new URLSearchParams(orders);
     var founderror=false;
     for (i in orders){
         if (isNonNegInteger(orders['quantity' + i])==false) {
@@ -100,16 +102,16 @@ app.post('/process_invoice', function (request, response, next) {
         response.redirect("index.html");
     }
 }
-
 //if the data is valid, send them to the invoice, otherwise send them back to index
 var errors={};
 
-/*if(Object.keys(errors).length == 0) {
-    response.redirect('./invoice.html?'+ qs.stringify(request.body)); //move to invoice page if no errors
+if(Object.keys(errors).length == 0) {
+    response.redirect('./login.html?'+ qs.stringify(request.body)); //move to invoice page if no errors
 }else{
     response.redirect('./index?'+ qs.stringify(request.body));
-}*/
+} 
 });
+
 //Author: Lab14; Kazman
 //checks if login is valid
 if (fs.existsSync(filename)) {
@@ -124,13 +126,7 @@ if (fs.existsSync(filename)) {
     console.log("Enter the correct filename bozo!");
 }
 
-username = 'newuser';
-user_data[username] = {};
-user_data[username].password = 'newpass';
-user_data[username].email = 'newuser@user.com';
-
 //if login is valid, bring them to invoice; from Lab 14 Ex3.js
-//NEED TO FIX; trying to have login button request contents of user.json
 
 app.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
@@ -143,9 +139,7 @@ app.post("/login", function (request, response) {
 
     if (user_data[user_name] != undefined) {
         if (user_data[user_name].password == user_pass) {
-            // trying to redirect to invoice
-            var orders = request.body;
-            var string_orders= new URLSearchParams(orders);
+            // redirect to invoice
             response.redirect('./invoice.html?'+ string_orders); 
             return;
         } else {
@@ -159,13 +153,63 @@ app.post("/login", function (request, response) {
 });
 
 
+//save registration data and add it to user_data.json
+app.post("./register", function (request, response) {
+    var new_errors = {};
 
-//save orders to varible called params
+    /* Process a simple register form */
+    /* Make it so capitalization is irrelevant for usernames */
+    var new_username = request.body['username'].toLowerCase();
 
-app.post("process_invoice", function(request, response){
-    var orders = request.body;
-    var string_orders= new URLSearchParams(orders);
-    response.send("invoice.html?"+ string_orders);
+    /* Require only letters to be used for usernames */
+    if (/^[A-Za-z]{4,10}$/.test(request.body.username) == false) {
+       new_errors['username'] = 'only letters in your username. '
+    }
+
+    // Require a specific email format 
+    if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(request.body.email) == false) {
+        new_errors['email'] = 'Please enter a valid email address'
+    }
+
+    //Require a unique username 
+    if (typeof user_data[new_username] != 'undefined') {
+        new_errors['username'] = 'Username is already taken.'
+    }
+
+    /* Require a minimum of 4 characters and no more than 10 */
+    if(request.body.password.length < 6) {
+        new_errors['password'] = 'You must enter a minimum of 6 characters.'
+    }
+
+    /* Confirm that both passwords were entered correctly */
+    if(request.body.password !== request.body.repeat_password) {
+        new_errors['repeat_password'] = 'Both passwords must match'
+    }
+
+    /* If new_errors is empty */
+    if (JSON.stringify(new_errors) == '{}') {
+        /* Write data into user_data.json and send to invoice.html */
+        user_data[new_username] = {};
+        user_data[new_username].name = request.body.name;
+        user_data[new_username].password = request.body.password;
+        user_data[new_username].email = request.body.email;
+
+        /* Writes user information into file */
+        fs.writeFileSync(filename, JSON.stringify(user_data));
+
+        /* Add username and email to query */
+        request.query['username'] = request.body.username;
+        request.query['email'] = user_data[new_username].email;
+        response.redirect('./invoice.html?' + qs.stringify(request.query));
+        return;
+    }
+    else {
+        /* Put errors and registration data into query */
+        request.query['reg_errors'] = JSON.stringify(new_errors);
+        request.query['reg_data'] = JSON.stringify(request.body);
+        response.redirect(`./register.html?` + qs.stringify(request.query));
+    }
 });
+
 
 app.listen(8080, () => console.log(`listening on port 8080`));

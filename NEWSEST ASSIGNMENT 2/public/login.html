@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    let params = (new URL(document.location)).searchParams;
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <title>login</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Log In for Boba</h1>
+        <div class = "main">
+            <script>
+                document.write(`<form action="/login" method="post" name ="login">`);            
+            </script> 
+
+                <span>
+                    <label>Username</label>
+                    <input type = "text" placeholder= "Username" name ="username" required>
+                </span><br>
+                <span>
+                    
+                    <label>Password</label>
+                    <input type= "password" placeholder="Password" name="password">
+                </span><br>
+                    <button type="submit" class="btn">Login</button>
+                    <input type="button" class="button" value="Register" onclick="window.location.href = 'register.html';">
+            </form>
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>
