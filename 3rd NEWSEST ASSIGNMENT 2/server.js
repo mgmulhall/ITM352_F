@@ -64,8 +64,7 @@ app.all('*', function (request, response, next) {
 var string_orders ="";
 //brin data from store page to login
 app.post('/process_invoice', function (request, response, next) {
-    //to validate data
-    // error bag
+    //Validate that all requested quanties are valid
     var orders = request.body;
     console.log(orders);
     string_orders= new URLSearchParams(orders);
@@ -75,6 +74,7 @@ app.post('/process_invoice', function (request, response, next) {
         if (isNonNegInteger(orders['quantity' + i])==false) {
             founderror=true;
         }
+        //if all quanitites are validated, redirect to login page with the quantiites orderd 
         if (founderror==true){
             response.redirect("login.html?"+string_orders);
     }
@@ -84,7 +84,7 @@ app.post('/process_invoice', function (request, response, next) {
 }
     var errors = {};
 
-    //if the data is valid, send them to the invoice, otherwise send them back to index
+    //if the data is valid, send user to the invoice, otherwise send them back to index
     if (Object.keys(errors).length == 0) {
         response.redirect('./invoice.html?' + qs.stringify(request.body)); //move to invoice page if no errors
     } else {
