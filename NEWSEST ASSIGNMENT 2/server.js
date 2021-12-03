@@ -84,12 +84,13 @@ app.all('*', function (request, response, next) {
 });
 
 
-//brin data from store page to login
+//bring data from store page to login
 app.post('/process_invoice', function (request, response, next) {
     //to validate data
     // error bag
     var orders = request.body["quantity"];
-    string_orders= new URLSearchParams(orders);
+    var string_orders = new URLSearchParams(orders);
+    var new_string_orders = JSON.stringify(string_orders);
     var founderror=false;
     for (i in orders){
         if (isNonNegInteger(orders['quantity' + i])==false) {
@@ -140,7 +141,7 @@ app.post("/login", function (request, response) {
     if (user_data[user_name] != undefined) {
         if (user_data[user_name].password == user_pass) {
             // redirect to invoice
-            response.redirect('./invoice.html?'+ string_orders); 
+            response.redirect('./invoice.html?'+ new_string_orders); 
             return;
         } else {
             // Bad login, redirect; if username & pass don't match
