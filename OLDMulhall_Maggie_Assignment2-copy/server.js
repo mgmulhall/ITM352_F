@@ -1,17 +1,22 @@
-//Krizel Tomines 
+//Krizel Tomines & Maggie Mulhall
 //Author: Kazman/Port & WODS & Labs
-
 var express = require('express'); //code for server
 var qs = require('querystring');
 var app = express();
-var myParser= require("body-parser");
 var fs = require('fs');
 var queryString=require("query-string");
-
+var myParser = require("body-parser");
+var filename = "./user_data.json";
 
 app.use(express.urlencoded({ extended: true })); //decode URL encoded data from POST requests
+
+// handles request for any static files
+app.use(express.static('./public'));
+
+/* for index & invoice */
+
 app.get("/index", function (request, response) {
-    var contents = fs.readFileSync('./views/index.html', 'utf8');
+    var contents = fs.readFileSync('./views/index.html', 'utf8'); //reads index file & saves contents in it 
     response.send(eval('`' + body + '`')); // render template string
 
     //author: nate moylan; 
@@ -32,25 +37,24 @@ app.get("/index", function (request, response) {
 
             // makes sure the quantity inputted by the user is validated. 
             if (typeof req.query['purchase_submit'] != 'undefined') {
-        
                 for (i = 0; i < products.length; i++) {
                     if (params.has(`quantity${i}`)) {
                         a_qty = params.get(`quantity${i}`);
                         // make textboxes sticky in case of invalid data
                         product_selection_form[`quantity${i}`].value = a_qty;
                         total_qty += a_qty;
-                        if (!isNonNegInt(a_qty)) {
+                        if (!isNonNegInteger(a_qty)) {
                             has_errors = true; // if invalid quantity
                             checkQuantityTextbox(product_selection_form[`quantity${i}`]); // shows where the error is
                         }
                     }
                 }
-                
+
                 console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query)); //log purchase quantities
             }
             next();
         }
-        
+
         return str;
     }
 });
@@ -58,7 +62,7 @@ app.get("/index", function (request, response) {
 // to validate that an input value = a non negative integer
 // inputstring is the input string; returnErrors indicates how the function returns
 // true = return the array, false = return a boolean.    
-function isNonNegInt(inputstring, returnErrors = false) {
+function isNonNegInteger(inputstring, returnErrors = false) {
     errors = []; // assume no errors at first
     if (Number(inputstring) != inputstring) {
         errors.push('Not a number!'); // this is to check if string = a number value
@@ -66,7 +70,10 @@ function isNonNegInt(inputstring, returnErrors = false) {
     else {
         if (inputstring < 0) errors.push('Negative value!'); // to check if it is non-negative
         if (parseInt(inputstring) != inputstring) errors.push('Not an integer!'); // to check that it's an integer
+        if (inputstring > 9) errors.push('Sorry, We Are Out. We Will Make More Soon');
+
     }
+
     return returnErrors ? errors : (errors.length == 0);
 }
 // routing
@@ -77,151 +84,86 @@ app.all('*', function (request, response, next) {
 });
 
 app.post('/process_invoice', function (request, response, next) {
-//to validate data
-//error bag
-var errors={};
-
+    //to validate data
+    // error bag
+    var orders = request.body;
+    var string_orders= new URLSearchParams(orders);
+    var founderror=false;
+    for (i in orders){
+        if (isNonNegInteger(orders['quantity' + i])==false) {
+            founderror=true;
+        }
+        if (founderror==true){
+            response.redirect("login.html?"+string_orders);
+    }
+    else {
+        response.redirect("index.html");
+    }
+}
 
 //if the data is valid, send them to the invoice, otherwise send them back to index
-if(Object.keys(errors).length == 0) {
+var errors={};
+
+/*if(Object.keys(errors).length == 0) {
     response.redirect('./invoice.html?'+ qs.stringify(request.body)); //move to invoice page if no errors
 }else{
     response.redirect('./index?'+ qs.stringify(request.body));
-}
+}*/
 });
-
-//save inputted user name data to user_data.js
-//adapted from File I/O screencast and lab 14 Ex4
-var data = require('./user_data.json');
-var filename = "user_data.json"
-
-const { response } = require('express');
-
-//serves as get requests
-/*app.all('*', function (require, response, next) { // Links to my request POST
-    console.log(require.method + ' to ' + require.path); // Write the request method in the console and path
-    next(); // Continue
-});*/
-//if the file exists, read it and store contents in variable data
+//Author: Lab14; Kazman
+//checks if login is valid
 if (fs.existsSync(filename)) {
     data = fs.readFileSync(filename, 'utf-8');
-//make data javascript (parse it) into varible user_data
-    user_data = JSON.parse(data);
+
+    user_data = JSON.parse(data); //if parser makes imported data readable json
     console.log("User_data=", user_data);
 
     fileStats = fs.statSync(filename);
     console.log("File " + filename + " has " + fileStats.size + " characters");
 } else {
-    console.log(filename+"is not a file");
+    console.log("Enter the correct filename bozo!");
 }
 
-app.use(express.urlencoded({ extended: true })); //allow a post request from URL to save data to request body.
+username = 'newuser';
+user_data[username] = {};
+user_data[username].password = 'newpass';
+user_data[username].email = 'newuser@user.com';
 
-app.get("/login", function(request, response){
-    //this simple log in form needs to be my login.html
-    str =`<body>
-    <form action"/login" method="POST">
-    <input type = "text" name ="" placeholder= "Username" required><br />
-    <input type= "password" name="" placeholder= "Password" required><br />
-    <button type="submit" class="btn">Login</button>
-    </form>
-    </body> 
-    `;
-    response.send(str)
-});
+//if login is valid, bring them to invoice; from Lab 14 Ex3.js
+//NEED TO FIX; trying to have login button request contents of user.json
 
-app.post("/login", function (request, response){
+app.post("/login", function (request, response) {
+    // Process login form POST and redirect to logged in page if ok, back to login page if not
     console.log("Got a POST to login");
     POST = request.body;
 
     user_name = POST["username"];
     user_pass = POST["password"];
-    console.log("User name="+ user_name + " Password="+ user_pass);
+    console.log("User name=" + user_name + " password=" + user_pass);
+
     if (user_data[user_name] != undefined) {
-        if (user_data[user_name].password == user_pass){
-            response.redirect("invoice.html");
+        if (user_data[user_name].password == user_pass) {
+            // trying to redirect to invoice
+            var orders = request.body;
+            var string_orders= new URLSearchParams(orders);
+            response.redirect('./invoice.html?'+ string_orders); 
+            return;
         } else {
-            response.send("Invalid Login");
+            // Bad login, redirect; if username & pass don't match
+            response.send("Your login is not correct!");
         }
     } else {
-        response.send("Bad Username");
-    }
-
-});
-
-
-/* for registration; author: reece nagaoka */
- /* wont work !!!*/
- app.post("./register", function (request, response) {
-    var new_errors = {};
-
-     /* Process a simple register form */
-    /* Make it so capitalization is irrelevant for usernames */
-    var new_username = request.body['username'].toLowerCase();
-
-
-    // Requires usernames to be letters and numbers 
-    if (/^[0-9a-zA-Z]+$/.test(request.body.username)) {
-     }
-    else {
-    errors.push('Letters And Numbers Only for Username')
-     }
-
-    /* Require a unique username */
-    if (typeof user_data[new_username] != 'undefined') {
-        new_errors['username'] = 'Username is already taken.'
-    }
-
-    /* Require a minimum of 4 characters and no more than 10 */
-    if(request.body.password.length < 6) {
-        new_errors['password'] = 'You must enter a minimum of 6 characters.'
-    }
-
-    /* Confirm that both passwords were entered correctly */
-    if(request.body.password !== request.body.repeat_password) {
-        new_errors['repeat_password'] = 'Both passwords must match'
-    }
-
-    /* If new_errors is empty */
-    if (JSON.stringify(new_errors) == '{}') {
-        /* Write data and send to invoice.html */
-        user_data[new_username] = {};
-        user_data[new_username].name = request.body.name;
-        user_data[new_username].password = request.body.password;
-        user_data[new_username].email = request.body.email;
-
-        /* Writes user information into file */
-        fs.writeFileSync(filename, JSON.stringify(user_data));
-
-
-    /* Require a specific email format */
-    if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(request.body.email) == false) {
-        new_errors['email'] = 'Please enter a valid email address'
-    }
-        /* Add username and email to query */
-        request.query['username'] = request.body.username;
-        request.query['email'] = user_data[new_username].email;
-        response.redirect('./invoice.html?' + qs.stringify(request.query));
-        return;
-    }
-    else {
-        /* Put errors and registration data into query */
-        request.query['reg_errors'] = JSON.stringify(new_errors);
-        request.query['reg_data'] = JSON.stringify(request.body);
-        response.redirect(`./register.html?` + qs.stringify(request.query));
+        // not even username
+        response.send("Register or enter again please!");
     }
 });
 
-// handles request for any static files
-app.use(express.static('./public'));
-app.listen(8080, () => console.log(`listening on port 8080`));
+//save orders to varible called params
 
-//create file
-//fs.writeFileSync(filename, user_data, "utf-8");
+app.post("process_invoice", function(request, response){
+    var orders = request.body;
+    var string_orders= new URLSearchParams(orders);
+    response.send("invoice.html?"+ string_orders);
+});
 
-// add new inputted user data to user_data.json
-//fs.appendFileSync(filename, data, "utf-8");
-
-// handles request for any static files
-app.use(express.static('./public'));
 app.listen(8080, () => console.log(`listening on port 8080`));

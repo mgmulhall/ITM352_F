@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+    let params = (new URL(document.location)).searchParams;
+</script>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,37 +10,30 @@
     <link rel="stylesheet" href="login.css">
     <title>login</title>
 </head>
-
 <body>
     <div class="container">
         <div class="header">
-            <h1>Log In For Boba</h1>
+            <h1>Log In for Boba</h1>
         <div class = "main">
-            <form action="/login" method="post">
+            <script>
+                document.write(`<form action="/login" method="post" name ="login">`);            
+            </script> 
+
                 <span>
                     <label>Username</label>
-                    <input type = "text" name ="" placeholder= "Username" required>
+                    <input type = "text" placeholder= "Username" name ="username" required>
                 </span><br>
                 <span>
-
+                    
                     <label>Password</label>
-                    <input type= "password" name="" placeholder= "Password" required>
+                    <input type= "password" placeholder="Password" name="password">
                 </span><br>
                     <button type="submit" class="btn">Login</button>
-        
+                    <input type="button" class="button" value="Register" onclick="window.location.href = 'register.html';">
             </form>
         </div>
         </div>
     </div>
-
-<!--make login button work-->
-
-<div class="go_register">
-    Join Us! <a href="register.html">Register!</a>
-</div>
-</div> 
-     </form>
-    </div> 
 
 </body>
 </html>

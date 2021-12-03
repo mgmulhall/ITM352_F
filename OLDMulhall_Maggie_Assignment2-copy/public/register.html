@@ -15,18 +15,20 @@
     <div class="content">
       <form action="#">
         <div class="user-details">
-
+          <div id="account"
           <!---Full Name--->
           <div class="input-box">
             <span class="details">Full Name</span>
-            <input type="text" placeholder="Enter your name" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+" required
-              title="Minimum: 5 Characters. Maximum: 10 Characters. Numbers and/or Letters Only.">
+            <input type="text" placeholder="Enter your name" 
+            pattern="[a-zA-Z]+[ ]+[a-zA-Z]+" required title="Minimum: 5 Characters. Maximum: 10 Characters. Numbers and/or Letters Only.">
           </div>
 
           <!---Username--->
           <div class="input-box">
             <span class="details">Username</span>
-            <input type="text" placeholder="Enter your username" pattern=".[a-z0-9]{3,10}" required>
+            <input type="text" id="username" name="username" pattern=".[a-z0-9]{3,10}" placeholder="Enter your username" required>
+            <label for "username" id="username_label"> Enter 4-10 characters</label>
+            
           </div>
 
           <!---Email--->
@@ -75,10 +77,8 @@
         </div>
 
         <!---Submit button--->
-        <div class="button">
-          <input type="submit" value="Register">
-        </div>
-      </form>
+        <input type="button" class="button" value="Register" onclick="window.location.href = 'invoice.html';">    
+        </form>
     </div>
   </div>
 
