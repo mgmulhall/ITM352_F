@@ -99,6 +99,7 @@ app.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     console.log("Got a POST to login");
     POST = request.body;
+    datauser=request.body
 
     user_name = POST["username"];
     user_pass = POST["password"];
@@ -121,6 +122,7 @@ app.post("/login", function (request, response) {
 });
 
 // registration page
+
 app.post('/process_register', function(req, res) {
     // add a new user to the data base
     console.log(req.body);

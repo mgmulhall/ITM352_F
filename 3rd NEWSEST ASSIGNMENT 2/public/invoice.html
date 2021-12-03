@@ -2,12 +2,14 @@
 
 <script>
 
-var filename='user_data.json'
+var filename='user_data.json';
+var datauser="";
   //Krizel Tomines 
   //author: xinfei li
   //product quantities are in the querystring
   // get request for products in array
     let params = (new URL(document.location)).searchParams;
+    datauser=params;
     var quantities = [];
 
     if (params.has('purchase_submit')) {
@@ -37,6 +39,12 @@ var filename='user_data.json'
 </head>
 
 <body>
+    <h2>Thank you
+        <script>
+          document.write(datauser.get('fullname')); 
+        </script>
+        for your purchase!
+      </h2>
 
     <table class="w3-table-all w3-card-4">
         <thead>
@@ -129,8 +137,7 @@ var filename='user_data.json'
         <br>$5 shipping for $50-200 
         <br> 5% of the subtotal amount shipping for $200+
         <br>no refunds!
-        <!--personalize by saying, come again NAME-->
-        <br> Come again, document.write('Thanks for Purchasing'+user_data.json[name]);
+        
 
     <input type="button" class="button" value="To da shop" onclick="window.location.href = 'index.html';">
 </body>
