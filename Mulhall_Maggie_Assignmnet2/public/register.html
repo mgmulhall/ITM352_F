@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    // Referenced Lab 14 code
+    let params = (new URL(document.location)).searchParams;
+    // Alert the user if there is an error with the information inputted
+    window.onload = function () {
+      if (params.has('errors')) {
+        console.log("invalid");
+        alert('Fix the following errors: \n' + params.get('errors'));
+      }
+    }
+  </script>
+  <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+  <link rel="stylesheet" href="register.css">
+  
+  <!--Borrowed style and portion of template from W3 Schools Food Blog template-->
+  <style>
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: "Karma", sans-serif
+    }
+
+    .w3-bar-block .w3-bar-item {
+      padding: 20px
+    }
+  </style>
+
+</head>
+<body>
+  <!--Name of Store and at the top of the page-->
+  <header>
+    <div style="text-align: center;">
+     
+    </div>
+  </header>
+
+  <!-- Sidebar (hidden by default), it will also navigate throughout the page -->
+  <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left"
+    style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button">CLOSE MENU</a>
+    <a href="./login.html" onclick="w3_close()" class="w3-bar-item w3-button">LOGIN PAGE</a>
+    <a href="./products_display.html" onclick="w3_close()" class="w3-bar-item w3-button">CONTINUE SHOPPING</a>
+  </nav>
+
+  <!-- Top menu, includes the navigation sidebar to click on, describes the page, and purchase button to submit the inputted data -->
+  <div class="w3-bar-item">
+    <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
+      <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+      <div class="w3-right w3-padding-16">ITM352</div>
+      <div class="w3-center w3-padding-16">REGISTER</div>
+    </div>
+  </div>
+  <br>
+  <!-- Registration page, new users can input their information to make an account to get the invoice page-->
+  <form name="Register" action="process_register" method="POST">
+    <hr id="register">
+    <h2>
+      Become a Boba-Addict!
+    </h2>
+    <div class="registration">
+      <label for="fullname"><b>FULL NAME</b></label><br>
+      <input type="text" name="fullname" size="30" pattern="[a-zA-Z]+[ ]+[a-zA-Z]+"
+      maxlength="30" placeholder="FULL NAME" required><br><br>
+
+      <label for="email"><b>EMAIL</b></label><br>
+      <input type="email" name="email" size="30" pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]{3,}$" placeholder="ENTER EMAIL"><br><br>
+
+      <label for="createusername"><b>CREATE USERNAME</b></label><br>
+      <input type="text" name="username" size="30" pattern=".[a-z0-9]{3,10}" placeholder="CREATE USERNAME" required title="NUMBERS AND LETTERS ONLY! 4-10 CHARACTERS"><br><br>
+
+      <label for="createpassword"><b>CREATE PASSWORD</b></label><br>
+      <input type="password" name="password" size="30" pattern=".{6,}" placeholder="PASSWORD" onkeyup="" required title="MINIMUM: 6 CHARACTERS"><br><br>
+
+      <label for="repeatpassword"><b>REPEAT PASSWORD</b></label><br>
+      <input type="password" name="repeatpassword" size="30" pattern=".{6,}" placeholder="REPEAT PASSWORD" required title="MUST BE MATCHING"><br><br>
+
+      <h3>BY CREATING THIS ACCOUNT, YOU AGREE TO OUR TERMS AND CONDITIONS!</h3>
+      <input class="loginbutton" type="submit" value="REGISTER" name="register">
+    </div>
+    </form>
+    <!-- If they already have an account, they can go back to the login page to login-->
+    <form >
+      <div class="containerlogin">
+        <input type="button" name="Login" value="to log in!" onclick="window.location='./Login.html' + document.location.search">
+      </div>
+      </form>
+    
+    <script>
+        // Will save the products in the query string to user in the invoice page
+        Register.action += document.location.search;
+    </script>
+    <script>
+      // Script to open and close sidebar
+      function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+      }
+
+      function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+      }
+    </script>
+
+</div>
+</div>
+  
+</body>
+</html>

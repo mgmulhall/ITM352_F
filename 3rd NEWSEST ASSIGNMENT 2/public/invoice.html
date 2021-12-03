@@ -3,13 +3,13 @@
 <script>
 
 var filename='user_data.json';
+//declare data user as a global varible
 var datauser="";
   //Krizel Tomines 
   //author: xinfei li
   //product quantities are in the querystring
   // get request for products in array
     let params = (new URL(document.location)).searchParams;
-    datauser=params;
     var quantities = [];
 
     if (params.has('purchase_submit')) {
