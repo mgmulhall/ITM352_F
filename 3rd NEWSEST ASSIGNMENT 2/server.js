@@ -12,7 +12,7 @@ var userdatafile = './user_data.json';
 var filedata = 'user_data.json';
 var userdata = JSON.parse(fs.readFileSync(userdatafile,'utf-8'));
 
-
+//if user_data.json exists, read the file and out put its stats
 if (fs.existsSync(filedata)) {
     var filestats = fs.statSync(filedata); // gets the stats from the file
     var userdata = JSON.parse(fs.readFileSync(userdatafile,'utf-8'));
@@ -32,45 +32,8 @@ app.get("/index", function (request, response) {
     var contents = fs.readFileSync('./views/index.html', 'utf8'); //reads index file & saves contents in it 
     response.send(eval('`' + body + '`')); // render template string
 
-    //author: nate moylan; 
-    //this function creates a for loop to generate the products for the page
-    function display_products() {
-        str = '';
-        // loop to generate the products
-        for (i = 0; i < products.length; i++) {
-            str += `
-            <section class ="item">
-            <h2>${products[i].brand}</h2> 
-            <h3 label id ="quantities${i}"><i>Available: ${products[i].quantities} in stock!</i></h3></label>
-            <h4>$${products[i].price.toFixed(2)}</h4>
-            <img src="./images/${products[i].image}" class="img">
-            <label id ="quantity${i}_label">Number of Items: </label>
-            <input type="text" placeholder="0" name="quantity${i}" onkeyup="checkQuantityTextbox(this);"> 
-            </section>`;
-
-            // makes sure the quantity inputted by the user is validated. 
-            if (typeof req.query['purchase_submit'] != 'undefined') {
-                for (i = 0; i < products.length; i++) {
-                    if (params.has(`quantity${i}`)) {
-                        a_qty = params.get(`quantity${i}`);
-                        // make textboxes sticky in case of invalid data
-                        product_selection_form[`quantity${i}`].value = a_qty;
-                        total_qty += a_qty;
-                        if (!isNonNegInteger(a_qty)) {
-                            has_errors = true; // if invalid quantity
-                            checkQuantityTextbox(product_selection_form[`quantity${i}`]); // shows where the error is
-                        }
-                    }
-                }
-
-                console.log(Date.now() + ': Purchase made from ip ' + req.ip + ' data: ' + JSON.stringify(req.query)); //log purchase quantities
-            }
-            next();
-        }
-
-        return str;
-    }
-});
+    
+}); 
 
 // to validate that an input value = a non negative integer
 // inputstring is the input string; returnErrors indicates how the function returns
@@ -97,6 +60,7 @@ app.all('*', function (request, response, next) {
     next();
 });
 
+//decalre global varible to hold requested quanities
 var string_orders ="";
 //brin data from store page to login
 app.post('/process_invoice', function (request, response, next) {
