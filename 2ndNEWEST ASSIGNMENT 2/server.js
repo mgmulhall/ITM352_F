@@ -7,8 +7,8 @@ var fs = require('fs');
 var queryString=require("query-string");
 var myParser = require("body-parser");
 var filename = "./user_data.json";
-var new_string_orders;
-
+var data = require("./products.js");
+var products = data.products
 
 app.use(express.urlencoded({ extended: true })); //decode URL encoded data from POST requests
 
@@ -87,34 +87,29 @@ app.all('*', function (request, response, next) {
 
 
 //bring data from store page to login
+//adapted from Toni Libara
 app.post('/process_invoice', function (request, response, next) {
-    //to validate data
-    // error bag
-    var orders = request.body["quantity"];
-    var string_orders = new URLSearchParams(orders);
-    var new_string_orders = JSON.stringify(string_orders);
-    var founderror=false;
-    for (i in orders){
-        if (isNonNegInteger(orders['quantity' + i])==false) {
-            founderror=true;
+    let POST = request.body; // create a variable
+    console.log(POST);
+    if(typeof POST ['purchasebutton'] !='undefined') {
+        var validquantities = true; // assumes the values are true and has valid quantities
+        var hasquantities = false
+        for (i=0; i < products.length; i++) {
+
+            qty = POST [`quantity${i}`];
+            hasquantities = hasquantities || qty > 0; // valid if the value is > 0
+            validquantities = validquantities && isNonNegInt(qty); // if they are both valid and >0
         }
-        if (founderror==true){
-            response.redirect("login.html?"+new_string_orders);
-    }
-    else {
-        response.redirect("index.html");
-    }
-}
-//if the data is valid, send them to the invoice, otherwise send them back to index
-var errors={};
 
-if(Object.keys(errors).length == 0) {
-    response.redirect('./login.html?'+ qs.stringify(request.body)); //move to invoice page if no errors
-}else{
-    response.redirect('./index?'+ qs.stringify(request.body));
-} 
+    const stringified = qs.stringify(POST); // generate invoice if all the quantities are valid
+    if (validquantities && hasquantities) {
+        response.redirect("./login.html?" + stringified); // direct to login page with the query string of the order quantities
+    } else {
+        response.redirect("./index.html?" + stringified)
+        }
+    }
 });
-
+    
 //Define vairable new_sting_orders out side of process invoice function to make it global
 //var new_string_orders = JSON.stringify(request.body["quantity"]);
 
