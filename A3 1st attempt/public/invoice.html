@@ -1,0 +1,145 @@
+<script src="./products.js" type="text/javascript"></script>
+
+<script>
+
+var filename='user_data.json';
+var datauser="";
+  //Krizel Tomines 
+  //author: xinfei li
+  //product quantities are in the querystring
+  // get request for products in array
+    let params = (new URL(document.location)).searchParams;
+    datauser=params;
+    var quantities = [];
+
+    if (params.has('purchase_submit')) {
+        for (i = 0; i < products.length; i++) {
+            if (params.has(`quantity${i}`)) {
+                a_qty = params.get(`quantity${i}`);
+                quantities[i] = a_qty;
+            }
+        }
+    } else {
+        document.write('no form submitted');
+
+    }
+    console.log(quantities);
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="invoice.css" rel="stylesheet">
+    <title>Shopping Cart</title> 
+
+</head>
+
+<body>
+    <h2>Thank you
+        <script>
+          document.write(datauser.get('fullname')); 
+        </script>
+        for your purchase!
+      </h2>
+
+    <table class="w3-table-all w3-card-4">
+        <thead>
+            <tr class="w3-blue">
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Extended price</th>
+        </thead>
+        <script>
+            //Borrowed and modified from invoice 4 WODs
+            //check if the quantites is valid or not, if it is good to go, then to invoice. 
+            subtotal = 0;
+            total_qua = 0; //make the total quantities is 0 at frist
+            for (i = 0; i < products.length; i++) {
+                if (quantities[i] > 0) {
+                    // product row
+                    total_qua += Number(quantities[i]); //convert string to number, in order to display number
+                    extended_price = quantities[i] * products[i].price;
+                    subtotal += extended_price;
+                    document.write(`
+      <tr>
+        <td width="43%"><em>${products[i].brand}</em></td>
+        <td align="center" width="11%"><em>${quantities[i]}</em></td>
+        <td width="13%"><em>\$${products[i].price}</em></td>
+        <td width="54%"><em>\$${extended_price}</em></td>
+      </tr>
+      `);
+
+                }
+            }
+            //compute tax
+
+            var tax_rate = 0.04;
+            var tax = tax_rate * subtotal;
+
+            //compute shipping
+            if (total_qua <= 49) { //if the total quantites is under$ 50, then free shipping
+                shipping = 0;
+            }
+            else if (total_qua <= 200) { //if the total quantites is between $50-200, then $15 for shipping
+                shipping = 15;
+            }
+            else {
+                shipping = 0.05 * subtotal; // 5% of subtotal
+            }
+            //compute grant total
+            var total = subtotal + tax + shipping;   
+
+        </script>
+        <tr>
+            <td style="text-align: center;font-family: serif;" colspan="3" width="67%">Total Quantities</td>
+            <td width="54%">
+                <script>document.write(total_qua);</script>
+            </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-family: serif;" colspan="3" width="67%">Sub-total</td>
+            <td width="54%">$
+                <script>document.write(subtotal.toFixed(2));</script>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;font-family: serif;" colspan="3" width="67%"><span
+                    style="font-family: Lucida Bright;">Tax @
+                    <script>document.write(100 * tax_rate);</script>%
+                </span></td>
+            <td width="54%">$
+                <script>document.write(tax.toFixed(2));</script>
+            </td>
+        </tr>
+        <td style="text-align: center; font-family: serif;" colspan="3" width="67%">Shipping</span></td>
+        <td width="54%">$
+            <script>document.write(shipping.toFixed(2));</script>
+        </td>
+        </tr>
+        <tr>
+            <td style="text-align: center;font-family: serif;" colspan="3" width="67%"><strong>Total</strong>
+            </td>
+            <td width="54%"><strong>$
+                    <script>document.write(total.toFixed(2));</script>
+                </strong></td>
+        </tr>
+        </tbody>
+    </table>
+<br></br>
+
+        <strong>SHIPPING POLICY:</strong>
+        <br>$1 shipping for $50 
+        <br>$5 shipping for $50-200 
+        <br> 5% of the subtotal amount shipping for $200+
+        <br>no refunds!
+        
+
+    <input type="button" class="button" value="To da shop" onclick="window.location.href = 'index.html';">
+</body>
+
+</html>

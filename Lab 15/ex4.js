@@ -1,19 +1,15 @@
-var session = require('express-session');
-
-app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
-
-
-var cookieParser = require('cookie-parser');
-app.use(cookieParser());
-
-
 var fs = require('fs');
 var express = require('express');
 var app = express();
 var myParser = require("body-parser");
 var filename = "./user_data.json";
 var queryString = require("query-string");
-const { request } = require('express');
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+var session = require('express-session');
+
+app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
+
 
 app.use(myParser.urlencoded({ extended: true }));
 
@@ -31,29 +27,59 @@ if (fs.existsSync(filename)) {
     console.log("Enter the correct filename bozo!");
 }
 
-app.get("/set_cookie", function (request, response){
+//when you go to local host 808
+app.get("/", function (request, response) {
+  //check if page_views exists, if it does, add one to it and say welcome back
+    if (request.session.page_views){
+        request.session.page_views++;
+        response.send("Welcome back! This is vist number " + request.session.page_views);
+    //If page_views does not exist, create it and make it 1. 
+    //This says that this is the first time the user has been on the page
+    } else{
+        request.session.page_views = 1;
+        response.send("Welcome to this page for the first time!");
+    }
+
+}
+);
+app.get("/set_cookie", function (request, response) {
     my_name = "Maggie Mulhall";
 
-    response.cookie("My Name", my_name,{maxAge:5000}.send("Cookie sent"));
+    response.cookie("My Name", my_name, {maxAge: 30*60*1000}).send("Cookie sent");
 }
 );
-app.get("get_cookie", function (request, response){
+
+app.get("/get_cookie", function (request, response) {
+    //console.log("Cookies=" + request.cookies);
     my_cookie_name = request.cookies["My Name"];
-
-    response.send("User" + my__cookie_name+ + "recognized");
-
+    response.send("User " + my_cookie_name + " recognized");
+}
+);
+app.get("/set_session", function (request, response, next) {
+    response.send("your session id is " + request.session.id);
+    next();
 }
 );
 
-app.get("use_session", function (request, response){    
-
-    response.send("Your session id is"+request.session.id);
+app.get("/use_session", function (request, response) {
+    response.send("your session id is " + request.session.id);
+    request.session.destroy();
 }
 );
 
 app.get("/login", function (request, response) {
     // Give a simple login form
+    if (typeof request.session['last_login']!= "undefined"){
+        //create new variable called log in time and get the value of the last login from the session and add it to the string "Last login was" and save it to the varible login_time
+        login_time = "Last login was " + request.session["last_login"];
+        //if last login in undefinred, the login_time says that this is the first time they login in
+    } else {
+        login_time = "First login";
+    }
+    my_cookie_name = request.cookies["username"];
+    //add login time to page
     str = `<body>
+    Login info:${login_time} by ${my_cookie_name}
 <form action="/login" method="POST">
 <input type="text" name="username" size="40" placeholder="enter username" ><br />
 <input type="password" name="password" size="40" placeholder="enter password"><br />
@@ -75,7 +101,10 @@ app.post("/login", function (request, response) {
     if (user_data[user_name] != undefined) {
         if (user_data[user_name].password == user_pass) {
             // Good login
-            response.redirect("products_page.html");
+            request.session['last_login']  = Date();
+            response.cookie('username', user_name, {"maxAge": 10*1000});
+            request.session['username'] = user_name;
+            response.send("Welcome "+ user_name);
         } else {
             // Bad login, redirect
             response.send("Sorry bud");
