@@ -1,4 +1,16 @@
 //Krizel Tomines & Margaret Mulhall; idea from Chloe Cheng
+//create an object of all product types
+
+var allProducts = {
+    "boba": boba,
+    "smoothies": smoothies,
+    "scones": scones,
+    "icecream": icecream
+}
+if (typeof module != 'undefined') {
+    module.exports.allProducts = allProducts;   // export the products 
+  }
+ // an array of the products we would like to sell  
 var products =
 [
     {
@@ -112,15 +124,4 @@ var icecream =
     "image":  "./images/blueberry.jpeg",
     "quantity_available": 9
 }]
-// an array of the products we would like to sell 
 
-// create a product array with all products; author: chloeexcc
-var allProducts = {
-    "pen": pen,
-    "notebook": notebook,
-    "folder": folder,
-    "accessories": accessories
-}
-if (typeof module != 'undefined') {
-    module.exports.allProducts = allProducts;   // export the products 
-  }
