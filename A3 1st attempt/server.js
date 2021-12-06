@@ -301,10 +301,7 @@ app.post('/remove-from-cart', (request, response) =>{
 
 }); 
 
-      
-
-
-//this process the login form Reference: lab 14 from Professor Port 
+//this processes the login form Reference: lab 14 from Professor Port 
 app.post("/process_login", function (req, res) {
     var LogError = [];
     console.log(req.query);
@@ -347,38 +344,36 @@ app.post("/process_register", function (req, res) {
     if (/^[A-Za-z]+$/.test(req.body.name)) { //full name on name part
     }
     else {
-      errors.push('Use Only Letters for Full Name')
+      errors.push('ONLY LETTERS')
     }
 
-    if (req.body.name == "") {
-      errors.push('Invalid Full Name');// full name is invalid if put wrong
+    if (req.body.name== "") { // validate name
+        errors.push('INVALID FULL NAME');
     }
 
-     if ((req.body.fullname.length > 20 && req.body.fullname.length <1)) {
-    errors.push('Full Name Too Long')// fullname length :1-20
-  }
+    if (req.body.fullname.length > 25 && req.body.fullname.length < 0) { // length of the full name is between 0 and 25
+        errors.push ('NAME TOO LONG')
+    }
   
-    var reguser = req.body.username.toLowerCase(); //username in lowercase
+    var reguser = req.body.username.toLowerCase(); // checks the new username and makes it lowercase
     if (typeof user_data[reguser] != 'undefined') {
-      errors.push('Username taken')
+      errors.push('USERNAME TAKEN')
     }
     
-    if (/^[0-9a-zA-Z]+$/.test(req.body.username)) {//username only letter and number
+    if (/^[0-9a-zA-Z]+$/.test(req.body.username)) { // username is in number and letters
     }
     else {
-      errors.push('Username: Letters And Numbers Only')
+      errors.push('ONLY LETTERS AND NUMBERS FOR USERNAME!')
     }
-
     
-    if (req.body.password.length < 6) {//password length: 6 characters or more
-      errors.push('Password: At least 6 Characters and/or Numbers Required')
+    if(req.body.password.length < 6) { // password needs to be less than 6 characters
+        errors.push('PASSWORD IS TOO SHORT!')
+    }
+    if (req.body.password != req.body.repeatpassword){ // checks if both passwords match
+        errors.push('PASSWORDS DO NOT MATCH!')
     }
    
-    if (req.body.password !== req.body.repeat_password) {  // matching password
-      errors.push('Password Not Match')
-    }
-   
-    if (errors.length == 0) { // Save user's refister information if no error
+    if (errors.length == 0) { // Save new user's register information if no error
       POST = req.body
       console.log('no errors')
 
@@ -402,7 +397,6 @@ app.post("/process_register", function (req, res) {
         res.redirect('register.html?' + queryString.stringify(req.query));
     }
 });
-
 
 //check if the number is valid
 function isNonNegInt(q, returnErrors = false) { //value are integer

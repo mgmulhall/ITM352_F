@@ -162,7 +162,7 @@ app.post('/process_register', function(req, res) {
         errors.push('PASSWORDS DO NOT MATCH!')
     }
     console.log(req.body);
-// Referenced and modified from Lab14
+//Referenced and modified from Lab14
     // make form sticky
     req.query["fullname"] = req.query["fullname"];
     req.query["username"] = req.query["username"];

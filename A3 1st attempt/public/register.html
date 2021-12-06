@@ -45,22 +45,24 @@
     </div>
   </header>
 
-  <!-- Sidebar (hidden by default), it will also navigate throughout the page -->
-  <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left"
-    style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
-    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button">CLOSE MENU</a>
-    <a href="./login.html" onclick="w3_close()" class="w3-bar-item w3-button">LOGIN PAGE</a>
-    <a href="./products_display.html" onclick="w3_close()" class="w3-bar-item w3-button">CONTINUE SHOPPING</a>
-  </nav>
+  <!--Add Navigation Bar-->
+  <nav id="nav">
+    <ul>
+        <li><a href="./index.html">Home</a></li>
 
-  <!-- Top menu, includes the navigation sidebar to click on, describes the page, and purchase button to submit the inputted data -->
-  <div class="w3-bar-item">
-    <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
-      <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
-      <div class="w3-right w3-padding-16">ITM352</div>
-      <div class="w3-center w3-padding-16">REGISTER</div>
-    </div>
-  </div>
+        <li><div class="dropdown">
+            <a class="dropbtn" href="./display.html">Products</a >
+            <div class="dropdown-content"></div>
+            
+            <div>
+        <li><a href="./login.html">Login</a></li>
+        <li><a href="./register.html">Register</a></li>     
+         </div>
+        </div>
+
+    </ul>
+</nav>
+
   <br>
   <!-- Registration page, new users can input their information to make an account to get the invoice page-->
   <form name="Register" action="process_register" method="POST">
@@ -89,13 +91,6 @@
       <input class="loginbutton" type="submit" value="REGISTER" name="register">
     </div>
     </form>
-    <!-- If they already have an account, they can go back to the login page to login-->
-    <form >
-      <div class="containerlogin">
-        <input type="button" name="Login" value="to log in!" onclick="window.location='./Login.html' + document.location.search">
-      </div>
-      </form>
-    
     <script>
         // Will save the products in the query string to user in the invoice page
         Register.action += document.location.search;
