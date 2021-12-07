@@ -466,14 +466,14 @@ if(errors.length === 0){
      var tax = tax_rate*subtotal;
 
      //compute shipping
-     if(subtotal <=30) {
-       shipping =1;
+     if(subtotal <=49) {
+       shipping =0;
      }
-    else if(subtotal <=100){
-      shipping = 2;
+    else if(subtotal <=200){
+      shipping = 15;
     }
     else{
-      shipping = 0.03*subtotal; // 3% of subtotal
+      shipping = 0.05*subtotal; // 5% of subtotal
     }
      //compute grant total
     var total = subtotal + tax + shipping;
