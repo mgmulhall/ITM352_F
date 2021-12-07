@@ -109,7 +109,7 @@
                 <p>$${products[i].price}</p>
                 <form action="add_cart" method="POST">
                 <label id="quantity${i}_label"}">Quantity</label>
-                <input type="hidden"  name="product_type" value="${product_type}">
+                <input type="text"  name="product_type" value="${product_type}">
                 <input type="hidden" name="ProductName" value="${products[i].brand}">
                 <input type="hidden" name="price" value="${products[i].price}">
                 <input type="text" placeholder="0" name="quantity"

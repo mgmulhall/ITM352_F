@@ -14,17 +14,12 @@ var nodemailer = require('nodemailer'); // enable to sent emial
 const { type } = require('os');
 const shift = 4; //shift for encyption get helped from stackoverlow
 
-//initialize session
-app.use(session({
-    secret: 'ITM 352 IS THE BEST',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        name: 'cookieID',
-        maxAge: 1000 * 60 * 60 * 24 * 7
-    }
-}));
+//initialize session, from lab 15
+app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
 
+app.use(myParser.urlencoded({ extended: true }));
+
+app.use(express.static('./public'));
 
 // link to request 
 app.all('*',function(request,response,next){
@@ -34,17 +29,15 @@ app.all('*',function(request,response,next){
 
 app.use(myParser.urlencoded({ extended: true }));
 
-
 //check if file exist 
 if(fs.existsSync(filename)) {
     var file_stats =fs.statSync(filename);
-    console.log(filename + 'has' + file_stats.size + 'characters!');// if exist shows the size 
+    console.log(filename + 'has ' + file_stats.size + ' characters!');// if exist shows the size 
     data = fs.readFileSync(filename,'utf-8'); //read in the data
     user_data = JSON.parse(data);
 } else {
     console.log(filename + ' does not exist!'); // if not exist shows on console.
 }
-
 
 //-------encrypt the password -------//
 function encrypt(password){
@@ -59,7 +52,7 @@ function encrypt(password){
  	return encrypted_result;
 }
 
-//check if session exist, if not redirect to destination, else to login
+//check if logged in with a username. yes: move on no: redirect them to the login
 const redirectLogin = (request, response, next) => {
   if(!request.session.userName){
       response.redirect('/login.html')
@@ -67,8 +60,7 @@ const redirectLogin = (request, response, next) => {
       next()
   }
 }
-
-//check if session exist, if not redirect to destination, else to display
+//check if logged in, if not redirect to destination, else to display
 const redirectHome = (request, response, next) => {
   if(request.session.userName){
     response.redirect('/display.html?' + 'fullname=' + request.session.userName.name)
@@ -77,61 +69,66 @@ const redirectHome = (request, response, next) => {
   }
 }
 
-//direct user to display.html
+//direct user to shopping cart after login 
 const redirectDisplay = (request, response , next) => {
   if(!request.session.cart){
-    return response.redirect('/to-display');
+    return response.redirect('/to-shoppingcart.html');
   }else{
     next()
   }
 }
+//----get requests for nav bar-----
 
-//go to login, if user is not log in, else reidrect to home
+//go to login
 app.get('/to-login', redirectHome, function(request, response) {
   response.redirect('/login.html');
 })
 
-//go to register if user is not log in, else redirect to home
+//go to register
 app.get('/to-register', redirectHome, function(request, response) {
   response.redirect('/register.html');
 })
 
 //go to shopping cart
 app.get('/to-shoppingcart', redirectLogin, function(request, response) {
-  response.redirect('/shoppingchart.html');
+  response.redirect('/shoppingcart.html');
 })
 
 //go to display.html
-app.get('/to-display', redirectLogin, function(request, response){
-  response.redirect('/display.html?' + 'fullname=' + request.session.userName.name)
+app.get('/to-display', redirectHome, function(request, response){
+  response.redirect('/products_display.html?');
 })
 
 //go to checkout
 app.get('/checkout', function(request, response){
   if(typeof request.session.cart == 'undefined' || request.session.cart.length == 0){
-    response.redirect('/shoppingchart.html?error=cart is empty');
+    response.redirect('/shoppingcart.html?error=cart is empty');
   }
   response.redirect('/checkout.html');
   
 });
 
-//to the index page, if user is login in, redirect to display
+//to the index page
 app.get('/', redirectHome, function(request, response) {
   return response.redirect('/index.html');
 })
 
 //navigate back to the display page from invoice, and clear the cart
 app.get('/to-display-clear', function(request,response){
+  //clear the cart
   request.session.cart = [];
   console.log(request.session.cart);
+  //send them back to display
   return response.redirect('/to-display');
 })
 
 
-//log-out and clear the session
+//log-out
 app.get('/log-out', redirectLogin, (request, response) => {
+  //end the session
   request.session.destroy();
-  response.redirect('/login.html?' + "logout=You have successfully logged out");
+  //send user back to products display page
+  response.redirect('/products_display.html?' + "logout=You are now logged out.");
 })
 
 //post cart item to front end as json
@@ -241,7 +238,7 @@ app.post('/add_one', function(request, response){
 
 
 
-  return response.redirect("/shoppingchart.html");
+  return response.redirect("/shoppingcart.html");
 
 });
 
@@ -272,7 +269,7 @@ app.post('/remove_one', function(request, response){
         
     }
 
-  return response.redirect("/shoppingchart.html");
+  return response.redirect("/shoppingcart.html");
 
 });
 
@@ -297,7 +294,7 @@ app.post('/remove-from-cart', (request, response) =>{
         cart.splice(foundItemIndex, 1);
     }
 
-    return response.redirect('/shoppingchart.html');
+    return response.redirect('/shoppingcart.html');
 
 }); 
 
@@ -314,8 +311,7 @@ app.post("/login", function (request, response) {
 
   if (user_data[user_name] != undefined) {
       if (user_data[user_name].password == user_pass) {
-          // redirect to invoice
-          //console.log(string_orders);
+          // redirect to shopping cart
           response.redirect('./shoppingcart.html?'); 
           return;
       } else {

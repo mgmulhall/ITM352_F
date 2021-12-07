@@ -15,26 +15,26 @@ var products =
 [
     {
         "type": "boba",
-        "image": "./images/titlepage/tboba.JPG"
+        "image": "./images/boba.JPG"
     },
 
 
 
     {
         "type": "smoothies",
-        "image": "./images/titlepage/tsmoothie.JPG"
+        "image": "./images/smoothie.JPG"
     },
 
 
 
     {
         "type": "scones",
-        "image": "./images/titlepage/tscones.JPG"
+        "image": "./images/scones.JPG"
     },
 
     {
         "type": "ice cream",
-        "image": "./images/titlepage/ticecream.JPG"
+        "image": "./images/icecream.JPG"
     }
 
 ];

@@ -27,7 +27,7 @@ if (fs.existsSync(filename)) {
     console.log("Enter the correct filename bozo!");
 }
 
-//when you go to local host 808
+//when you go to local host 8080
 app.get("/", function (request, response) {
   //check if page_views exists, if it does, add one to it and say welcome back
     if (request.session.page_views){
