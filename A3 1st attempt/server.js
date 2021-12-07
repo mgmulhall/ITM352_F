@@ -301,38 +301,31 @@ app.post('/remove-from-cart', (request, response) =>{
 
 }); 
 
-//this processes the login form Reference: lab 14 from Professor Port 
-app.post("/process_login", function (req, res) {
-    var LogError = [];
-    console.log(req.query);
-    
-    the_username = req.body.username.toLowerCase(); //username in lowercase
-    the_password = req.body.password;
-    let encrypted_password_input = encrypt(the_password);
-    if (typeof user_data[the_username] != 'undefined') { //matching username
+//this processes the login form Reference: lab 14
+app.post("/login", function (request, response) {
+  // Process login form POST and redirect to logged in page if ok, back to login page if not
+  console.log("Got a POST to login");
+  POST = request.body;
+  datauser=request.body
 
-        if (user_data[the_username].password == encrypted_password_input) {
-            req.query.username = the_username; 
-            req.session.userName = user_data[the_username];
-            req.query.name = user_data[req.query.username].name
+  user_name = POST["username"];
+  user_pass = POST["password"];
+  console.log("User name=" + user_name + " password=" + user_pass);
 
-
-            res.redirect('/display.html?' + 'fullname=' + req.session.userName.name); // if match direct to display 
-
-            return; // all good, send to invoice
-        } else { //password wrong, show invalid password
-            LogError.push = ('Invalid Password');
-            console.log(LogError);
-            req.query.name= user_data[the_username].name;
-            req.query.LogError=LogError.join(';');
-        }
-        } else { //push to the user invalid username if username is incorrect 
-            LogError.push = ('Invalid Username');
-            console.log(LogError);
-            req.query.username= the_username;
-            req.query.LogError=LogError.join(';');
-        }
-    res.redirect('./login.html?' + queryString.stringify(req.query));
+  if (user_data[user_name] != undefined) {
+      if (user_data[user_name].password == user_pass) {
+          // redirect to invoice
+          //console.log(string_orders);
+          response.redirect('./shoppingcart.html?'); 
+          return;
+      } else {
+          // Bad login, redirect; if username & pass don't match
+          response.send("Your login is not correct!");
+      }
+  } else {
+      // not even username
+      response.send("Register or enter again please!");
+  }
 });
 
 //this process the register form
