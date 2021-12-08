@@ -6,10 +6,10 @@ var allProducts = {
     "smoothies": smoothies,
     "scones": scones,
     "icecream": icecream
-}
+};
 if (typeof module != 'undefined') {
     module.exports.allProducts = allProducts;   // export the products 
-  }
+  };
  // an array of the products we would like to sell  
 var products =
 [

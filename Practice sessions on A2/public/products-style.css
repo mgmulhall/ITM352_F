@@ -1,0 +1,35 @@
+/*General*/
+body {
+    width: 800px; 
+    margin: 0 auto;
+}
+img {
+    width: 300px;
+    height: 400px;
+    border: 1px solid rgb(17, 14, 20);
+}
+h1 {
+    text-align: center;
+}
+h2 {
+    text-align: left;
+    
+}
+
+/* Layout */
+main {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    background-repeat: no-repeat;
+}.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+  }
+div {
+    border: 3px solid black;
+    display: flex;
+}
+html {background-color: oldlace} 

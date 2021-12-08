@@ -42,6 +42,7 @@ app.get("/", function (request, response) {
 
 }
 );
+
 app.get("/set_cookie", function (request, response) {
     my_name = "Maggie Mulhall";
 

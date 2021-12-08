@@ -10,7 +10,6 @@
     var count = params.get("count");
     var error_msg = params.get('errors');
     var products=allProducts[product_type];
-
     if(params.has("errors")){
         alert(error_msg);
     }
@@ -22,7 +21,7 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta Chloe="utf-8">
     <title>Boba store</title>
 
     <link href="products-style.css" rel="stylesheet">
@@ -51,8 +50,7 @@
                        
             // REFERENCED FROM ALYSSA MENCEL
         // to display user information on the page
-      
-
+    
                 if(params.has('fullname') && fullname != 'null'){
                     document.write(` <ul><li style="font-size: 15px">welcome,${fullname}</li></ul>`);
                 }
@@ -100,28 +98,21 @@
         <main>
           
     
-
             <script>
-                for (i = 0; i < products.length; i++) {
-                    document.write(`
-                <section class="item">
-                <h2>${products[i].brand}</h2>
-                <p>$${products[i].price}</p>
-                <form action="add_cart" method="POST">
-                <label id="quantity${i}_label"}">Quantity</label>
-                <input type="text"  name="product_type" value="${product_type}">
-                <input type="hidden" name="ProductName" value="${products[i].brand}">
-                <input type="hidden" name="price" value="${products[i].price}">
-                <input type="text" placeholder="0" name="quantity"
-                onkeyup="checkQuantityTextbox(this);">
-                <img src="./images/${products[i].image}">
-                <input class="button" type="submit" value="ADD TO CART!" name="Purchase_submit">
-                </form>
-            </section>
-            `)
-                }
+                // this for loop displays the products array 
 
-            </script>
+                    for (i=0; i < products.length; i++) {
+                document.write(`<section class="item">
+                    <h2>${products[i].brand}</h2>
+                    <h3>${products[i].quantity_available} avaliable.</h3>
+                    <p>$${products[i].price}</p>
+                    <label id="quantity${i}_label"}">Quantity</label>
+                        <input type="text" placeholder="0" name="quantity${i}" onkeyup="checkQuantityTextbox(this);"> 
+                    <img src=${products[i].image} class="center">
+        
+                </section>`);
+            }
+                </script>
         </main>
     </div>
 

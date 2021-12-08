@@ -1,5 +1,5 @@
-// Chloe and Caixin's server.js
-// Some parts are borrowed and modified by Assignement 1, Assignment 2, Lab 14, and Professor Port's sceencast.
+// Krizel Tomines & Margaret Mulhall
+//Based off Kazman's Labs, previous Assignments (1&2)
 var data = require('./public/products.js');  //loads products.js
 var allProducts=data.allProducts; // declare variable 
 const queryString = require('qs'); 
@@ -18,10 +18,9 @@ const shift = 4; //shift for encyption get helped from stackoverlow
 app.use(session({secret: "MySecretKey", resave: true, saveUninitialized: true}));
 
 app.use(myParser.urlencoded({ extended: true }));
-
 app.use(express.static('./public'));
 
-// link to request 
+// acts as universal app.get 
 app.all('*',function(request,response,next){
     console.log(request.method + 'to' + request.path);
     next();
@@ -29,75 +28,60 @@ app.all('*',function(request,response,next){
 
 app.use(myParser.urlencoded({ extended: true }));
 
-//check if file exist 
+//from our Assignment2
+//if user_data.json exists, read the file and out put its stats
 if(fs.existsSync(filename)) {
-    var file_stats =fs.statSync(filename);
-    console.log(filename + 'has ' + file_stats.size + ' characters!');// if exist shows the size 
+    var file_stats =fs.statSync(filename);// gets the stats from the file
+    console.log(filename + 'has ' + file_stats.size + ' characters!');
     data = fs.readFileSync(filename,'utf-8'); //read in the data
     user_data = JSON.parse(data);
 } else {
-    console.log(filename + ' does not exist!'); // if not exist shows on console.
+    console.log(filename + ' does not exist!'); // outputs the characters of the data file in the console
 }
 
-//-------encrypt the password -------//
-function encrypt(password){
- 	var encrypted = [];
- 	var encrypted_result = "";
-
- 	//encrypt the password Referece: Stack overflow 
- 	for (var i = 0; i < password.length; i++){
- 		encrypted.push(password.charCodeAt(i)+shift);
- 		encrypted_result += String.fromCharCode(encrypted[i]);
- 	}
- 	return encrypted_result;
-}
-
+//security
 //check if logged in with a username. yes: move on no: redirect them to the login
-const redirectLogin = (request, response, next) => {
-  if(!request.session.userName){
-      response.redirect('/login.html')
-  }else{
+const redirectLogin = (request, response, next) => { 
+  if(!request.session.userName){ // if no username, then send to login page to get one
+      response.redirect('/login.html') // sendung them to the login page
+  }else{ // move on to next destination
       next()
   }
 }
+//encrypts the password
+function encrypt(password){
+  var encrypted = []; //sets variable
+  var encrypted_result = ""; //sets variable to empty string
+  
+  //encrypt the password Referece: Stack overflow
+  for (var i = 0; i < password.length; i++){
+    encrypted.push(password.charCodeAt(i)+shift);
+    encrypted_result += String.fromCharCode(encrypted[i]);
+  }
+  return encrypted_result;
+ }
+ 
+
+//personalization
 //check if logged in, if not redirect to destination, else to display
-const redirectHome = (request, response, next) => {
+const redirectHome = (request, response, next) => { // if theres a username send them to the display 
   if(request.session.userName){
-    response.redirect('/display.html?' + 'fullname=' + request.session.userName.name)
+    response.redirect('/display.html?' + 'fullname=' + request.session.userName.name) // sends username to display page  
   }else{
     next()
   }
-};
+}
 
-//direct user to shopping cart from display if logged in
-const redirectDisplay = (request, response , next) => {
-  if(!request.session.cart){
-    return response.redirect('/to-shoppingcart.html');
+//after login, if nothing in cart then go to display.html
+const redirectDisplay = (request, response , next) => { // 
+  if(!request.session.cart){ //checks session in cart 
+    return response.redirect('/display.html'); // if nothing in cart send to display page
   }else{
     next()
   }
-};
-//----get requests for nav bar-----
-
-//go to login
-app.get('/to-login', redirectHome, function(request, response) {
-  response.redirect('/login.html');
-});
-
-//go to register
-app.get('/to-register', redirectHome, function(request, response) {
-  response.redirect('/register.html');
-});
-
-//go to shopping cart
-app.get('/to-shoppingcart', redirectLogin, function(request, response) {
-  response.redirect('/shoppingcart.html');
-});
-
-//go to display.html
-app.get('/to-display', redirectHome, function(request, response){
-  response.redirect('/products_display.html?');
-});
+}
+        //  NAVIGATION BAR //
+//adapted by Chloe & Caixin
 
 //go to checkout
 app.get('/checkout', function(request, response){
@@ -107,70 +91,90 @@ app.get('/checkout', function(request, response){
   response.redirect('/checkout.html');
   
 });
-
-//to the index page
+//takes user to registration 
+app.get('/to-register', redirectHome, function(request, response) {
+  response.redirect('/register.html');
+});
+//takes user to index page
 app.get('/', redirectHome, function(request, response) {
   return response.redirect('/index.html');
-})
+});
+//takes user to display.html
+app.get('/to-display', redirectHome, function(request, response){
+  response.redirect('/products_display.html?');
+});
+//t;akes user to login
+app.get('/to-login', redirectHome, function(request, response) {
+  response.redirect('/login.html');
+});
+//takes user to shopping cart
+app.get('/to-shoppingcart', redirectLogin, function(request, response) {
+  response.redirect('/shoppingcart.html');
+});
 
-//navigate back to the display page from invoice, and clear the cart
+
+
+// after checkout
+//after email is sent, clear contents in the cart and then redirect to products_display.html 
 app.get('/to-display-clear', function(request,response){
-  //clear the cart
-  request.session.cart = [];
+  request.session.cart = []; //clears the cart
   console.log(request.session.cart);
-  //send them back to display
-  return response.redirect('/to-display');
-})
+  return response.redirect('/to-display'); //sends user back to display when session is cleared
+});
 
 
-//log-out
+// user logs out of account
 app.get('/log-out', redirectLogin, (request, response) => {
-  //end the session
-  request.session.destroy();
-  //send user back to products display page
-  response.redirect('/products_display.html?' + "logout=You are now logged out.");
-})
+  request.session.destroy(); //destroys the session
+  response.redirect('/products_display.html?' + "logout = You are now logged out.");  //send user back to products display page
+});
 
-//post cart item to front end as json
+//referenced from lab 15
+//saves cart in session
 app.post("/get_cart", function (request, response) {
   response.json(request.session.cart);
 });
 
-//post user info to front end as json
+//referenced from lab 15
+//saves username in session 
+//personalization
 app.post("/get_user", function (request, response){
   response.json(request.session.userName);
-})
+});
 
-//post checkout info to front end as json
+//referenced from lab 15
+//saves user's checkout information in session 
 app.post("/get_checkout_info", function (request, response){
   response.json(request.session.checkout_info);
-})
+});
 
-//---add item to shopping cart, get help from Professor port----//
-app.post('/add_cart',  redirectLogin, function(request,response){
-  console.log(request.body);
-  var count;
-  var ptype = request.body['product_type'];
-  var formData_name = request.body['ProductName'];
-  var formData_quantity = parseInt(request.body['quantity']);
-  var formData_price = parseInt(request.body['price']);
+//sends shopping cart cookie to display.html
+//allows user to see shopping cart quantities in navigation bar
+app.post('/add_cart',  redirectLogin, function(request,response){ //creating variables when adding to cart to save attributes of ordered products
+  console.log(request.body); // logging whats in cart
+  var count; //declaring empty variable to later be filled 
+  var ptype = request.body['product_type']; //info saved in shopping cart
+  var formData_name = request.body['ProductName']; //info saved in shopping cart
+  var formData_quantity = parseInt(request.body['quantity']); //info saved in shopping cart
+  var formData_price = parseInt(request.body['price']); //info saved in shopping cart
 
-  //to store data 
+  // stores shopping cart data in an array
   formData = {ptype: ptype, name: formData_name, price: formData_price, quantity: formData_quantity};
 
-  var cart = request.session.cart;
+  var cart = request.session.cart; //whats displayed in nav bar
 
-  if(typeof cart == 'undefined'){
+  if(typeof cart == 'undefined'){ //if theres nothing in cart, display zero in nav bar
     count = 0;
   }
 
-  //check if the quantity entered is valid
-  if (isNonNegInt(formData_quantity)){
 
-    //if cart exists
-    if(cart){
-      //look for the index
-    var foundItemIndex = cart.findIndex((item) => {
+  //adapted by Chloe & Caixin
+  //check if the quantity entered is valid
+  if (isNonNegInteger(formData_quantity)){
+    
+    if(cart){ //if cart exists
+      
+    var foundItemIndex = cart.findIndex((item) => {//look for the index
         return item.name == formData_name;
       });
     //if the index returned in 0 or higher
@@ -212,9 +216,8 @@ app.post('/add_cart',  redirectLogin, function(request,response){
 });
 
 
-
-
-// add one to the item in cart
+      // SHOPPING CART //
+// allows user to add 1 quantity in shopping cart
 app.post('/add_one', function(request, response){
   var ptype = request.body['product_type'];
   var formData_name = request.body['ProductName'];
@@ -307,11 +310,12 @@ app.post("/login", function (request, response) {
 
   user_name = POST["username"];
   user_pass = POST["password"];
-  
-  console.log("User name=" + user_name + " password=" + user_pass);
+  cookie_name = user_name;
+
+  console.log("User name=" + cookie_name + " password=" + user_pass);
 
   if (user_data[user_name] != undefined) {
-      if (user_data[user_name].password == user_pass) {
+      if (user_data[user_name].password == user_pass) { //checks if inputted password is the saved one
           // redirect to shopping cart
           response.redirect('./shoppingcart.html?'); 
           return;
@@ -389,7 +393,7 @@ app.post("/process_register", function (req, res) {
 });
 
 //check if the number is valid
-function isNonNegInt(q, returnErrors = false) { //value are integer
+function isNonNegInteger(q, returnErrors = false) { //value are integer
     errors = [];  
     if (q == "") { q = 0; }
     if (Number(q) != q) errors.push('Not a number!'); // string is a number
