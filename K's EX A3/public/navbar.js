@@ -1,4 +1,10 @@
-// Borrowed and modified code from Noah Kim's Assignment2
+// Author: Krizel T & Maggie M
+// Date: 12/8/2021
+// Create navigation bar that will be at the top of the majority of the slides
+// Includes links to product pages, login, shopping cart, logout and registration
+// Borrowed and modified code from Noah Kim's Assignment 3
+
+//allows us to load user data into json file without dispalying password in URL
 function loadJSON(service, callback) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");

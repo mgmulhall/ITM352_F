@@ -1,17 +1,15 @@
 <script>
-    // Author: Kimberly Matutina //
-    // Date: 05/14/2021 //
-    // This file is my shopping cart page that displays the products and quantities that the user chose // 
-    // Modified code from my assignment 1 and assignment 3 //
-    // Borrowed and modified code from Lab 13, 14 + Alyssa Mencel Assignment 2 
-    // Followed Professor Port's Screencast
+    // Author: Krizel T & Maggie M //
+    // Date: 12/08/2021 //
+    // Displays shopping cart of orders
+    // Adapted from out Assignment 2
     </script>
     
     <script>
-      // Received help from Professor Port & Lab 12 on the following code
+      // Refrenced from Lab 12
       let params = (new URL(document.location)).searchParams; // Get data from form to create invoice
     
-      // Function to complete purchase
+      // Function to complete purchase from shopping cart page
       function completePurchase(){
         completePurchasediv.innerHTML = `Thank you for ${user_info["name"]} your purchase`;
         div = invoiceTableDiv;
@@ -84,7 +82,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="stylesheets/navbar.css">
       <link rel="stylesheet" href="stylesheets/invoice.css">
-      <title>Krave Beauty Skin Care Cart</title>
+      <title>What You've Picked</title>
       <script type="text/javascript">
         // This calls my Navbar from my navbar.js file, Professor Port helped me with this
         this_product_key = "";
@@ -96,7 +94,7 @@
       <!-- Took format from Invoice4, but adjusted format according to my liking-->
       <header>
        <!-- Header logo & Store name (from w3 css clothing store template)-->
-       <p class="hdrleft"><img src="images/mini.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+       <p class="hdrleft"><img src="images/thankyou.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
         <script>
             if (getCookie('user_info') != false) {
               var user_info = JSON.parse(getCookie('user_info'));
@@ -226,19 +224,15 @@
       </script>
       <hr class="w3-border-grey" style="margin:auto;width:40%"> <!-- horizontal line from w3 css clothing store template -->
       <div class="policy"><br><b>
-          OUR SHIPPING POLICY IS: <br> <!-- Format initially taken from Invoice 4, but adjusted to my liking-->
-          A subtotal $19.99 or less will be $2 shipping <br>
-          A subtotal $20 - $49.99 will be $5 shipping <br>
-          Subtotals over $50 will qualify for FREE shipping!</b>
+         <br> <!-- Shipping Policy From Assignmnets 1 & 2, slightly adjusted-->
+          <strong>SHIPPING POLICY:</strong>
+        <br>$2 shipping for up to 19.99 
+        <br>$5 shipping up to 49.99 
+        <br> Free shipping $50+
+        <br>no refunds!
       </div>
       <br>
       <hr class="w3-border-grey" style="margin:auto;width:40%"> <!-- horizontal line from w3 css clothing store template -->
-      <h4>See below for a general step-by-step routine using Krave Beauty products!</h4>
-      <div>
-        <!-- Display an image of a step-by-step routine for customers to see the order they should use their products and when-->
-        <img src="images/routine.png"
-          style="text-align: center; margin-left: auto; margin-right: auto; display: block; padding: 20px;">
-      </div>
     
     </footer>
     

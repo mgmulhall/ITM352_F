@@ -1,8 +1,7 @@
-/* Author: Kimberly Matutina */
-/* Date: 05/13/2021 */
+/* Author: Krizel T and Maggie M */
+/* Date: 12/8/2021 */
 /* This file is the stylesheet I used to style my shopping cart */ 
-
-/* Some styling choices taken from SmartPhoneProducts3 & Invoice 4, but adjusted to my liking */
+/* Modified from W3 schools sample invoice css template */
 
 .completePurchasediv {
     width: 100%;
@@ -63,7 +62,7 @@
   body {
       width: 800px;
       margin: 0 auto;
-      background-image: url("../images/backgrounds.jpeg");
+      background-image: url("../images/background.png");
       background-repeat: repeat;
       background-position: center;
       background-size: auto;
@@ -94,8 +93,7 @@
   }
   
   
-  /* Styling the increase and decrease buttons */
-  /* Styling increase & decrease buttons from Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv */
+  /* add one/ remove one from cart: https://codepen.io/mtbroomell/pen/yNwwdv */
     .value-button {
       display: inline-block;
       border: 1px solid #ddd;
@@ -108,7 +106,7 @@
       background: #eee;
     }
   
-    /* Style the various products */
+    /* arrange product pictures */
     section {
       width: 300%;
       margin: 5px;

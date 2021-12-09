@@ -1,13 +1,13 @@
-/* Author: Kimberly Matutina */
+/* Author: Krizel T and Maggie M */
 /* Date: 05/13/2021 */
-/* This file is the stylesheet I used to style my register page */ 
-/* Borrowed and modified css from w3 schools https://www.w3schools.com/howto/howto_css_register_form.asp */
+/* Style registration page */ 
+/* Adapted from w3 schools https://www.w3schools.com/howto/howto_css_register_form.asp */
 
 /* General */
 body {
     width: 800px;
     margin: 0 auto;
-    background-image: url("../images/backgrounds.jpeg");
+    background-image: url("../images/background.png");
     background-repeat: repeat;
     background-position: center;
     background-size: auto;

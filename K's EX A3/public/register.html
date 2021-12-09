@@ -1,11 +1,11 @@
 <script>
-    // Author: Krizel T & Maggie M //
-    // Date: 12/8/2021 //
-    // This file is my register page // 
+    // Author: Krizel T & Maggie M
+    // Date: 12/8/2021
+    // This file is out registration page
     /* https://www.w3schools.com/howto/howto_css_register_form.asp */
     </script>
     <script src="./navbar.js" type="text/javascript">
-        // This links it to my navbar.js
+        // This links it to navbar
     </script>  
     <!DOCTYPE html>
     <html lang="en">
@@ -17,7 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register Page</title>
         <script type="text/javascript">
-            // This calls my Navbar from my navbar.js file, Professor Port helped me with this
+            //refrences nav bar
             navbar();
         </script>
         <hr class="w3-border-grey" style="margin:auto;width:40%"> 
@@ -60,7 +60,7 @@
     
         <div class="container signin">
             <script>
-                // If already a member, sign in
+                // If user clicks on registration page but already has an account, allow them to log in
                 document.write(`<p>Been Here Before? <a href="./login.html${location.search}">Sign in here</a>.</p>`);
             </script>
         </div>
@@ -75,6 +75,7 @@
             username.value = params.get('username'); // Sticky username
             email.value = params.get('email'); // Sticky email
             var errors = params.get('errors').split(';');
+            //validation of registraition
             for (error_msg of errors) { 
                 if (error_msg == 'Username taken') {
                     username_msg.innerHTML = error_msg;
@@ -101,6 +102,6 @@
                     repeat_password_msg.innerHTML = error_msg;
                 }
             };
-            alert('Please fix the following error(s):\n' + errors.join('\n')); // If there are any of these error messages, alert and show error next to area of error
+            alert('Probelm(s) found:\n' + errors.join('\n')); // If there are any of these error messages, alert and show error next to area of error
         }
     </script>

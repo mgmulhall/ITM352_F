@@ -7,7 +7,7 @@
 body {
     width: 800px;
     margin: 0 auto;
-    background-image: url("../images/backgrounds.jpeg");
+    background-image: url("../images/background.png");
     background-repeat: repeat;
     background-position: center;
     background-size: auto;
@@ -47,13 +47,12 @@ body {
     
   
     
-    /* Center the avatar image inside this container */
+    /* Center image inside this container */
     .imgcontainer {
       text-align: center;
       margin: 24px 0 12px 0;
     }
     
-    /* Avatar image */
     img.avatar {
       width: 40%;
       border-radius: 50%;

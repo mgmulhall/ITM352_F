@@ -1,8 +1,7 @@
-// Author: Kimberly Matutina //
-// Date: 05/014/2021 //
-// This file is my server // 
-// Borrowed and modified code from Lab 13, 14 + Alyssa Mencel Assignment 2 https://github.com/amencel/ITM352_F20_repo/tree/master/mencel_alyssa_assignment2
-// Followed Professor Port's Screencast
+// Author: Krizel T and Maggie M //
+// Date: 12/08/2021 //
+// This is our server // 
+// Borrowed and modified code from our Assignmnet 2, Lab 13, 14, 15 + Alyssa Mencel Assignment 2 and Noah Kim
 var products = require('./products.json'); // set variable of products from product data to products
 var express = require('express');
 var app = express();
