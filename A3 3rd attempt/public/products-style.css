@@ -1,0 +1,255 @@
+/* Krizel & Maggie */
+ /* Author: Chloe Cheng & Caixin & SmartPhoneProduct3 */
+
+ html {
+  
+    background-color:oldlace;
+    font-family: sans-serif;
+    font-size: 10px;
+  }
+  
+  body {
+    width: 800px;
+    margin: 0 auto;
+  }
+  
+  
+  
+  /* NAVIGATION BAR */
+  ul {
+    list-style-type: none;
+    margin: 5;
+    padding: 0; 
+    overflow: hidden;
+    background-color: black;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  a:hover {
+    background-color: pink;
+  }
+  
+  
+  li a {
+    display: block;
+    color: white;
+    font-size: large;
+    text-align: center;
+    padding: 16px 14px;
+    text-decoration: none;
+  }
+  
+  
+  
+  /* active bar */
+  .active {
+    background-color: #000000;
+  }
+  
+  
+  /* Typography */
+  
+  h1, h2 {
+    
+    color:rgb(255, 255, 255);
+    font-family: sans-serif;
+    margin: 0;
+    text-align: center;
+    text-align: center;
+  }
+  
+  
+  h1 {
+    font-size: 5.5rem;
+    background-size: 48px 48px;
+    background-blend-mode: lighten;
+    background-color: black;
+    color:pink;
+    text-shadow: 1px 0 0 rgb(218, 118, 201)
+  
+  }
+  
+  h2 {
+    font-family: sans-serif;
+    font-size:20px;
+    color: pink;
+    width: 160px;
+    position: relative;
+    right:75px;
+    bottom: -82px;
+    text-shadow: 2px 2px 1px rgb(218, 118, 201);
+    line-height: 3rem;
+    padding-top: 0.3rem;
+    vertical-align: text-top;
+
+  
+  }
+  
+  h3{
+    font-family: sans-serif;
+    text-align:center;
+    font-size: 2rem;
+    position:relative;
+    line-height: 16rem;;
+    vertical-align: text-top;
+  }
+  
+  p {
+    line-height: 0.9rem;;
+    font-family: 'Perpetua';
+    font-size:10px;
+    position:static;
+    bottom: -100;
+    
+  }
+  
+  
+  /* block styling */
+  
+  
+  header, footer {
+    padding: 30px;
+  }
+  
+  main{
+    padding:10;
+  }
+  
+  header {
+    border-top: 8px solid#ffffff;
+    border-bottom:8px solid #ffffff;
+    position: relative;
+    top: 12px;
+  
+  }
+  
+  
+  
+  footer {
+    position:absolute;
+    bottom: 20;
+  }
+  
+  footer h1 {
+    font-style: italic;
+    font-size: 3rem;
+  }
+  
+  aside {
+    flex: 3;
+  }
+  
+  main {
+    flex: 7;
+  }
+  
+  
+  /*  Form styling */
+  
+  main {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+  }
+  
+  
+  /* Styling the products */
+  
+  
+  section {
+    width: 45%;
+    margin: 5px;
+    position: relative;
+    height: 215px;
+  }
+  
+  section p {
+    color: rgb(18, 45, 100);
+    background: lightgrey;
+    width: 50px;
+    height: 50px;
+    line-height: 53px;
+    text-align: center;
+    font-family:sans-serif;
+    font-size: 19px;
+    border-radius: 10px 100px / 120px;
+    box-shadow: 2px 2px 2px rgb(255, 255, 255);
+    position: absolute;
+    right: 10px;
+    bottom: -20px;
+    z-index: 2000;
+  }
+  
+  
+  .item {
+    background-size: 244px 24px;
+    
+  }
+ 
+
+.item img {
+  width: 215px;
+  height: 215px; 
+  position: relative;
+  top: 0;
+  display: inline;
+  position:inherit;
+  bottom: -100px;
+  margin-left: 5px;
+  
+}
+
+img {
+border: 2px solid rgb(255, 255, 255);
+/* Gray border */
+border-radius: 5px;
+/* Rounded border */
+padding: 3px;
+/* Some padding */
+width: 200px;
+/* Set a small width */
+}
+ /* displays quantity?  */
+
+ input {
+  background: rgb(255, 255, 255);
+  box-shadow: 2px 2px 1px purple;
+  color: green;
+  border: none;
+  padding: 7px;
+  width: 300px;
+  bottom: -300px;
+  }
+ /*ADD TO CART BUTTON & QUANTITY INPUT BOX */
+
+section input {
+  color: rgb(39, 39, 238);
+  background: pink;
+  width: auto;
+  height: 45px;
+  line-height: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 1px rgb(97, 98, 98);
+  position: absolute;
+  right: 10px;
+  bottom: -177px;
+  border-radius: 10px 100px / 120px;
+  z-index: 2000;
+}
+
+ /* QUANTITY INPUT BOX LABEL */
+
+section label {
+  font-size: 13px;
+  width: 50px;
+  height: 50px;
+  color: black;
+  text-align: justify;
+  position: absolute;
+  right: 8px;
+  bottom:-153px;
+  z-index: 2000;
+}

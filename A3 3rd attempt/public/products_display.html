@@ -1,0 +1,99 @@
+
+<!--Display product types where users can select types of products, click and then veiw the flavors on the next page-->
+<script src="products.js" type="text/javascript"></script>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta Chloe="utf-8">
+    <title>BOBA, SCONES, SMOOTHIES, ICE CREAM... OH MY</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Raleway" rel="stylesheet">
+
+    <link href="products-style.css" rel="stylesheet">
+    
+
+</head>
+
+<body>
+
+    <header>
+        <h1>Krizel x Maggie x Rabbit Rabbit Tea</h1>
+        
+    </header>                
+    <form action=" " name="product_selection_form" method="GET">
+  
+        <nav id="nav">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+
+                <li><div class="dropdown">
+                    <a class="dropbtn" href="./display.html">Products</a >
+                    <div class="dropdown-content"></div>
+                    
+                    <div>
+                <li><a href="./login.html">Login</a></li>
+                <li><a href="./register.html">Register</a></li>     
+                 </div>
+                </div>
+
+            </ul>
+        </nav>
+      
+
+
+        <main>
+            <style>
+        
+                body {  
+                    text-align: center;
+                }
+        
+                img {
+                    border: 1px solid black;
+                    /* Gray border */
+                    border-radius: 10px;
+                    /* Rounded border */
+                    padding: 7px;
+                    /* Some padding */
+                    width: 250px;
+                    /* Set a small width */
+                }
+        
+                /* Add a hover effect (black shadow) */
+                img:hover {
+                    box-shadow: 0 0 5px 1px black;
+                }
+            </style>
+        </head>
+        <!--for type of product in all products, display the type and image-->
+           </form> 
+           <script>
+               for (let ptype in allProducts) {
+            document.write(`<a href="display.html?productType=${ptype}">  <img src="images/${ptype}.JPG" width="500%"></a>`)}
+           </script>
+           
+            <body>
+                
+               <div>
+  
+               </div>
+           
+<footer>
+
+
+        <h1>
+         Click Product Type To Make Your Selection
+        </h1>
+
+
+
+
+    </footer>
+    
+
+</body>
+  
+</html>
