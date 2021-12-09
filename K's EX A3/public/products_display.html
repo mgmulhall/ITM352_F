@@ -10,12 +10,11 @@
     // This links it to my navbar.js
   </script>
   <script>
-     var products_data;
+     var products_data=
     loadJSON('get_products_data', function (response) {
-      // Parsing JSON string into object
+      // Parsing JSON string of products into object
       allproducts = JSON.parse(response);
     });
-    
     
     let params = (new URL(document.location)).searchParams; // Get data from form to create invoice
     var this_product_key = params.get("product_key");
@@ -50,13 +49,16 @@
           location.href = "./login.html" + location.search; // All good, send to login
         }
       }
-    }
+    };
+
     // Took functions (isNonNegInt & checkQuantityTextbox) from Lab 11 & 12, but adjusted to meet my webpage's requirements
     function isNonNegInt(q, return_errors = false) { // Checks if the values input are a positive integer
       errors = []; // Initially assumes there are no errors
-      if (q == '') q = 0; // If the input is "blank", set the value to 0 
+      if (q == ''); // If the input is "blank", set the value to 0 
       if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // Check if string is a number value. If not, send error with reason.
       else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // Check if string is non-negative. If not, send error with reason.
+      else if (q < a_qty) errors.push('<font color="red">Not Enough in Stock!</font>');// check is requested quanity is in stock. If not, send error with reason.
+      else if (q == 0) errors.push('<font color="red">Please Select At Least One Item To Add To Cart!</font>');
       else if (parseInt(q) != q) errors.push('<font color="red">Not an integer</font>'); // Check that it is an integer. If not, send error with reason.
       return return_errors ? errors : (errors.length == 0);
     }
@@ -102,7 +104,8 @@
       })();
     }
   
-      // function to get cookie
+      //function to get cookie
+      //from Lab 15 and https://stackoverflow.com/questions/47403321/decodeduricomponent-in-javascript-getcookie-function
       function getCookie(cname) {
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
@@ -125,12 +128,12 @@
   <head>
     <meta charset="UTF-8">
     <meta brand="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kim's Krave Beauty Skin Care</title>
+    <title>Krizel and Maggie's Boba Shop</title>
     <link rel="stylesheet" href="stylesheets/navbar.css">
     <link rel="stylesheet" href="stylesheets/products-style.css">
     </script>
     <script type="text/javascript">
-      // This calls my Navbar from my navbar.js file, Professor Port helped me with this
+      // This calls my Navbar from my navbar.js file
       navbar();
     </script>
   </head>
@@ -140,7 +143,7 @@
     <!-- Took a few  elements from SmartPhoneProducts3-->
     <header>
       <!-- Header logo & Store name (from w3 css clothing store template)-->
-      <p class="hdrleft"><img src="images/mini.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+      <p class="hdrleft"><img src="images/background.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
         <script>
           if (getCookie('user_info') != false) {
             var user_info = JSON.parse(getCookie('user_info'));
@@ -150,7 +153,7 @@
             document.write(`User not logged in`); // If the user does not have a cookie called "user_info", display not logged in msg
           };
         </script>
-        <i style="float:right; font-size: xx-large; padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Please Choose From The Menu Above</i></p>
+        <i style="float:right; font-size: xx-large; padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"> You Hungry? Please Choose From The Menu Above! Scoll to see options!</i></p>
     </header>
     <!-- Image header (from w3 css clothing store template)-->
     <div class="imghdr">
@@ -173,8 +176,8 @@
           <div style="border-style: solid; border-width:2px;">
           <!-- Load in product name -->
           <h2>${products[i].product}</h2> 
-          <!-- Load in product caption/description -->
-          <h4><p>${(products[i].caption)}</p></h4>
+          <!-- Load in product quantities available -->
+          <h4><p>${(products[i].quantity_available)} in stock</p></h4>
           <!-- Load in product price -->
           <h4><p>$${(products[i].price).toFixed(2)}</p></h4>
           <p><label>Quantity</label>

@@ -16,6 +16,7 @@ var cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const nodemailer = require("nodemailer");
 const url = require('url');
+const { count } = require('console');
 
 // ------ Read User Data File ----- //
 var user_data_file = './user_data.json'; // Load in user data
@@ -35,7 +36,7 @@ app.all('*', function (request, response, next) {
     next();
 });
 
-// ------ Load In Product Data ----- //
+// ------ Load In Product Data From Json ----- //
 app.post("/get_products_data", function (request, response, next) {
     response.json(products);
 });
@@ -166,6 +167,17 @@ app.post('/cart_qty', function (request, response) {
 });
 // ------ Get cart qty ----- //
 
+//--make products.json data java script---//
+var products_data;
+var products_data_file = './products.json';
+if (fs.existsSync(products_data_file)) {
+var products_data= JSON.parse(fs.readFileSync(products_data_file, 'utf-8'));
+};
+
+var a_qty;
+for ( i in products_data){
+    a_qty = products_data[i].quantity_available;
+};
 // ------ Process order from products_display ----- //
 // Got help from Professor Port during office hours
 app.post('/add_to_cart', function (request, response) {
@@ -173,15 +185,18 @@ app.post('/add_to_cart', function (request, response) {
     var qty = POST["prod_qty"];
     var ptype = POST["prod_type"];
     var pindex = POST["prod_index"];
-    if (isNonNegInt(qty)) {
+    //if the entered quantity passes non negative integer validation and is not 0, and theres enough in stock, add to cart. If no, tell user Invalid
+    if (isNonNegInt(qty) && qty!=0) {
         // Add qty data to cart session
         if (typeof request.session.cart[ptype] == "undefined") {
             request.session.cart[ptype] = [];
         }
         request.session.cart[ptype][pindex] = parseInt(qty);
-        response.json({ "status": "Successfully Added to Cart" });
-    } else {
-        response.json({ "status": "Invalid quantity, Not added to cart" });
+        response.json({ "status": "Successfully Added to Cart, Please refresh browser to display number of items in cart." });
+    } if(qty > a_qty){
+        response.json({ "status": "Not Enough In Stock, Not added to cart" });
+    } else{
+        response.json({ "status": "Invalid quantity, Not added to cart. Please ensure you are ordering at least one item and not more than what is in stock." });
     }
 });
 // ------ End Process order from products_display ----- //
