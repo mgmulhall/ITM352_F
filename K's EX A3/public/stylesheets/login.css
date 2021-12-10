@@ -5,66 +5,85 @@
 
 /* General */
 body {
-    width: 800px;
-    margin: 0 auto;
-    background-image: url("../images/background.png");
-    background-repeat: repeat;
-    background-position: center;
-    background-size: auto;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  width: 800px;
+  margin: 0 auto;
+  background-image: url("../images/background.png");
+  background-repeat: repeat;
+  background-position: center;
+  background-size: auto;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* Bordered form */
+form {
+    border: 3px solid #f1f1f1;
   }
   
-  /* Bordered form */
-  form {
-      border: 3px solid #f1f1f1;
-    }
-    
-    /* Full-width inputs */
-    input[type=text], input[type=password] {
-      width: 100%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    
-    /* Set a style for all buttons */
-    button {
-      background-color: rgb(145, 245, 145);
-      color: rgb(0, 0, 0);
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
-    
-    /* Add a hover effect for buttons */
-    button:hover {
-      opacity: 0.8;
-    }
-    
+  /* Full-width inputs */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
   
-    
-    /* Center image inside this container */
-    .imgcontainer {
-      text-align: center;
-      margin: 24px 0 12px 0;
-    }
-    
-    img.avatar {
-      width: 40%;
-      border-radius: 50%;
-    }
-    
-    /* Add padding to containers */
-    .container {
-      padding: 16px;
-    }
-    
+  /* Set a style for all buttons */
+  button {
+  height: 5%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, pink, white);
+
+  }
   
-    /* Set a grey background color and center the text of the "register" section */
-  .register {
+  /* Changes gradient for button when hovering */
+  button:hover {
+        /* transform: scale(0.99); */
+  background: linear-gradient(135deg, white, pink)  }
+  @media(max-width: 584px){
+  .container{
+   max-width: 100%;
+ }
+ form .user-details .input-box{
+     margin-bottom: 15px;
+     width: 100%;
+   }
+   form .category{
+     width: 100%;
+   }
+.main span{
+   position: relative;
+} }
+  
+
+  
+  /* Center image inside this container */
+  .imgcontainer {
     text-align: center;
+    margin: 24px 0 12px 0;
   }
+  
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+  /* Add padding to containers */
+  .container {
+    padding: 16px;
+  }
+  
+
+  /* Set a grey background color and center the text of the "register" section */
+.register {
+  text-align: center;
+}

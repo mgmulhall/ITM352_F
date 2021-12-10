@@ -1,3 +1,7 @@
+//WORKNG EMAIL
+
+
+
 // Author: Krizel T and Maggie M //
 // Date: 12/08/2021 //
 // This is our server // 
@@ -17,7 +21,6 @@ app.use(cookieParser()); // calls cookies
 const nodemailer = require("nodemailer"); // enable to sent emial 
 const url = require('url'); 
 const { count } = require('console');
-const e = require('express');
 
 // ALLOWS USERDATA FILE TO BE READ //
 var user_data_file = './user_data.json'; // Load in user data
@@ -127,9 +130,9 @@ app.post('/process_register', function (request, response, next) {
         errors.push('Passwords Do Not Match')
     }
 
-    // SAVES REGISTRATION TO USER_DATA.JSON & MAKES IT INTO A QUERY//
-    //  Borrowed & Modified Code from Lab 14 & Screencast // 
-    if (errors.length == 0) { 
+    // Borrowed some code from Lab 14 // 
+    // If there are no errors, save info to user data
+    if (errors.length == 0) {
         POST = request.body
         var username = POST['username']
         user_data[username] = {}; // Register it as user's information
@@ -140,128 +143,115 @@ app.post('/process_register', function (request, response, next) {
         fs.writeFileSync(user_data_file, data, "utf-8"); // Add new user to user data json file
         request.query.name = user_data[username].name;
         request.query.email = user_data[username].email;
-        //if no errors, tells user that they've successfully registered & redirect to invoice
-        response_string = `<script>alert('${user_data[username].name} Registration Successful!'); 
-        location.href = "${'./invoice.html?' + qs.stringify(request.query)}"; 
+        response_string = `<script>alert('${user_data[username].name} Registration Successful!');
+        location.href = "${'./invoice.html?' + qs.stringify(request.query)}";
         </script>`;
-        // saves info to variable for personalization
         var user_info = {"username": username, "name": user_data[username].name, "email": user_data[username].email};
-        response.cookie('user_info', JSON.stringify(user_info), { maxAge: 30 * 60 * 1000 }); //makes query string of user data into a cookie & makes info expire after 30 mins
-        response.send(response_string); 
-       
+        response.cookie('user_info', JSON.stringify(user_info), { maxAge: 30 * 60 * 1000 });
+        response.send(response_string);
+        // If no errors, send window alert success
     }
-    //redirect to register.html & keep info in query string, if there are errors
+    // If there are errors redirect to registration page & keep info in query string
     if (errors.length > 0) {
-        // saving body of request to the query string
         request.query.fullname = request.body.fullname;
         request.query.username = request.body.username;
         request.query.email = request.body.email;
-        // adds errors to query string
+        // Add errors to query string
         request.query.errors = errors.join(';');
         response.redirect('register.html?' + qs.stringify(request.query));
     }
 });
+// ------ End Process registration form ----- //
 
-
-
-// GETS CART QUANTITY //
-// Borrowed & Modified Code from Noah Kim A3
-//adds cart quantities to nav bar
+// ------ Get cart qty ----- //
 app.post('/cart_qty', function (request, response) {
-    var total = 0; // 
-    for (pkey in request.session.cart) { 
+    var total = 0;
+    for (pkey in request.session.cart) {
         total += request.session.cart[pkey].reduce((a, b) => a + b, 0);
     }
     response.json({"qty": total});
 });
+// ------ Get cart qty ----- //
 
-// MAKES PRODUCTS.JSON DATA INTO JAVA SCRIPT //
-// creates empty variable, reads data in json file, saves it as javascript 
-var products_data; 
+//--make products.json data java script---//
+var products_data;
 var products_data_file = './products.json';
 if (fs.existsSync(products_data_file)) {
-    console.log("reading the file");
 var products_data= JSON.parse(fs.readFileSync(products_data_file, 'utf-8'));
 };
-console.log(products_data);
-// empty variable for avaliable quantities
 
-
-// PROCESS THE ORDER FROM PRODUCTS_DISPLAY //
-// Borrowed & Modified Code from Alyssia Chen A2
+var a_qty;
+for ( i in products_data){
+    a_qty = products_data[i].quantity_available;
+};
+// ------ Process order from products_display ----- //
+// Got help from Professor Port during office hours
 app.post('/add_to_cart', function (request, response) {
     let POST = request.body; // create variable for the data entered into products_display
-    var qty = POST["prod_qty"]; //
+    var qty = POST["prod_qty"];
     var ptype = POST["prod_type"];
     var pindex = POST["prod_index"];
     //if the entered quantity passes non negative integer validation and is not 0, and theres enough in stock, add to cart. If no, tell user Invalid
-    if (isNonNegInteger(qty) && qty!=0 && qty <= products_data[ptype][pindex].quantity_available) {
+    if (isNonNegInt(qty) && qty!=0) {
         // Add qty data to cart session
         if (typeof request.session.cart[ptype] == "undefined") {
             request.session.cart[ptype] = [];
         }
         request.session.cart[ptype][pindex] = parseInt(qty);
-        response.json({ "status": "Successfully added to cart, please refresh browser to display number of items in cart." });
-    } else if(qty > products_data[ptype][pindex].quantity_available){ // if quantities are out of stock 
-        console.log("products data ptype =" + products_data[ptype]);
-        response.json({ "status": "Not enough in stock, not added to cart" });
-    } else if (qty==0){
-        response.json({ "status": "Invalid quantity, not added to cart. Please ensure you are ordering at least one item." });
-    } else {
-        response.json({ "status": "Invalid quantity. Please Enter a valid number."})
+        response.json({ "status": "Successfully Added to Cart, Please refresh browser to display number of items in cart." });
+    } if(qty > a_qty){
+        response.json({ "status": "Not Enough In Stock, Not added to cart" });
+    } else{
+        response.json({ "status": "Invalid quantity, Not added to cart. Please ensure you are ordering at least one item and not more than what is in stock." });
     }
 });
+// ------ End Process order from products_display ----- //
 
-// GET SHOPPING CART SESSION INFO //
+// ------ Get info from session (shopping cart data) ----- //
 app.post('/get_cart', function (request, response) {
     response.json(request.session.cart);
 });
+// ------ Get info from session (shopping cart data) ----- //
 
-// ADD NEW QUANTITIES TO SHOPPING CART SESSION INFO //
-// Borrowed & Modified Code from Landon Barsatan A3
+// ------ Update session info/shopping cart with new quantities ----- //
 app.post("/update_cart", function (request,response) {
     // replace cart in session with post
     // check if updated quantities are valid
     let haserrors = false;
-    for (let ptype in request.body.quantities) { 
+    for (let ptype in request.body.quantities) {
         for (let i in request.body.quantities[ptype]) {
             qty = request.body.quantities[ptype][i];
-            haserrors = !isNonNegInteger(qty) || haserrors; // if fails isNonNegInteger
+            haserrors = !isNonNegInt(qty) || haserrors; // Flag -> once haserrors true, always true
         };
     };
-    if (haserrors == true) { // if there are errors, send error 
+    if (haserrors == true) { // if there are errors, send error msg
         msg = "Invalid quantities. Cart not updated";
     } else { // if there are no errors, update cart
-        msg = "Cart successfully updated! :) ";
+        msg = "Cart successfully updated!";
         request.session.cart = request.body.quantities;
     }
-    const ref_URL = new URL(request.get('Referrer')); //finds page that user came from, when items failed to add to cart 
-    ref_URL.searchParams.set("msg", msg); // get new qs and add to already exisiting qs
-    response.redirect(ref_URL.toString()); //redirect to page user was just on
+    const ref_URL = new URL(request.get('Referrer'));
+    ref_URL.searchParams.set("msg", msg); // get qs and add to qs
+    response.redirect(ref_URL.toString());
 });
+// ------ End update session info/shopping cart with new quantities ----- //
 
-
-// LOGOUT
+// ------ User Logout ----- //
 app.get("/logout" , function (request, response) {
-    var user_info = JSON.parse(request.cookies["user_info"]); // makes user info javascript
-    var username = user_info["username"]; //checks to see whos logged in
-    //message if successful logout
+    var user_info = JSON.parse(request.cookies["user_info"]);
+    var username = user_info["username"];
     logout_msg = `<script>alert('${user_info.name} has successfully logged out!'); location.href="./index.html";</script>`;
-    response.clearCookie('user_info'); //destroys cookie
-    response.send(logout_msg); //if logged out, send message 
+    response.clearCookie('user_info');
+    response.send(logout_msg);
 });
+// ------ User Logout ----- //
 
-
-// COMPLETED PURCHASE, EMAILS INVOICE //
-// Borrowed & Modified Code from A3 Example Codes 
+// ------ Complete purchase -> email invoice ----- //
 app.post('/completePurchase', function (request, response) {
-    var invoice = request.body; // saves invoice data to variable
-    var user_info = JSON.parse(request.cookies["user_info"]); // sets user info as javascript
-    var the_email = user_info["email"]; //saves user email as variable
-    console.log(the_email);
+    var invoice = request.body;
+    var user_info = JSON.parse(request.cookies["user_info"]);
+    var the_email = user_info["email"];
     var transporter = nodemailer.createTransport({
-        // sets up mail server
-        //security, only functions on UH network
         host: "mail.hawaii.edu",
         port: 25,
         secure: false, // use TLS
@@ -270,34 +260,35 @@ app.post('/completePurchase', function (request, response) {
             rejectUnauthorized: false
         }
     });
-
     var mailOptions = {
-        from: 'mgmulhal@hawaii.edu',
+        from: 'mgmulhall@hawaii.edu',
         to: the_email,
-        subject: 'Thanks For Purchasing from Krizel and Maggie Boba! :) <3 ', //message in email if invoice sent
+        subject: 'Thanks For Purchasing from Krizel and Maggie Boba!',
         html: invoice.invoicehtml
     };
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            status_str = 'There was an error and your invoice could not be emailed :('; //message if invoice didn't send
+            status_str = 'There was an error and your invoice could not be emailed :(';
         } else {
             status_str = `Your invoice was mailed to ${the_email}`;
         }
         response.json({ "status": status_str});
     });
-    request.session.destroy(); //delete the session, once email is sent
+    request.send.destroy();
 });
+// ------ Complete purchase -> email invoice ----- //
 
-// Function to check if value isNonNegInteger // 
-// Borrowed and modified from Mark Chou A3
-function isNonNegInteger(q, return_errors = false) { // Checks if the values input are a positive integer
+// Function to check if value isNonNegInt
+// Borrowed function from Assignment 1
+function isNonNegInt(q, return_errors = false) { // Checks if the values input are a positive integer
     errors = []; // Initially assumes there are no errors
     if (q == '' || q == null) q = 0; // If the input is "blank" or null, set the value to 0 
-    if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // checks if value is a number
-    else if (q < 0) errors.push('<font color="red">Negative value!</font>'); //checks if value is a positive number
-    else if (parseInt(q) != q) errors.push('<font color="red">Not an integer!</font>'); //checks if value is a whole number
+    if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // Check if string is a number value. If not, send error with reason.
+    else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // Check if string is non-negative. If not, send error with reason.
+    else if (parseInt(q) != q) errors.push('<font color="red">Not an integer</font>'); // Check that it is an integer. If not, send error with reason.
     return return_errors ? errors : (errors.length == 0);
 }
 
 app.use(express.static('./public'));
+
 var listener = app.listen(8080, () => { console.log('server started listening on port ' + listener.address().port) });

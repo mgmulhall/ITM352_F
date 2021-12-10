@@ -21,7 +21,7 @@
     var products = allproducts[this_product_key];
     window.onload = function () {
       if (params.has('submitPurchase')) { // Check if there is qty data to check
-        // Check if all qty are NonNegInt
+        // Check if all qtys pass non neg integer test
         var haserrors = false;
         var hasquantities = false;
         for (i = 0; i < products.length; i++) {
