@@ -2,11 +2,10 @@
     // Author: Krizel T & Maggie M
     // Date: 12/8/2021
     // Modified from our assignment 2 and lab 14
-    // This file is my login page
+    // This file is our login page
     // css from https://www.w3schools.com/howto/howto_css_login_form.asp
     </script>
     <script src="./navbar.js" type="text/javascript">
-        // This links it to my navbar.js
     </script>  
     <!DOCTYPE html>
     <html lang="en">
@@ -18,13 +17,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login Page</title>
         <script type="text/javascript">
-            // This calls my Navbar from my navbar.js file, Professor Port helped me with this
+            // Calls nav bar
             navbar();
         </script>
     </head>
     
     <body>
         <script>
+            //CREATE LOGIN FORM
+            //Create login form with titles, username input, passsword input and submit button
             document.write(`
         <form action="process_login${location.search}" method="post">`);
         </script>
@@ -43,13 +44,11 @@
             <input type="password" placeholder="Enter Password" name="psw" required>
     
             <button type="submit">LOGIN</button>
-            <label>
-                <input type="checkbox" checked="checked" name="remember"> Remember me
-            </label>
         </div>
     
         <div class="container register">
          <script>
+             //allows user to register from login page without using the nav bar
             document.write(` <p>Don't have an account? <a href="./register.html${location.search}">Create one here</a></p>`);
         </script>  
           </div>
@@ -58,16 +57,20 @@
     </body>
     
     </html>
+
+    <!--LOGIN ERRORS-->
     <script>
         let params = (new URL(document.location)).searchParams;
+        //If there is a username error, tell user
         if (params.has('username_error')) {
             username_msg.innerHTML = params.get('username_error');
-            username.value = params.get('username'); // Sticky username
-            alert(params.get('username_error')); // If there is a username error, alert with username error
+            username.value = params.get('username'); // Makes username sticky if password is incorrect
+            alert(params.get('username_error')); // Tell user if their username is invalid
         }
+        //If there is a username error, tell user
         if (params.has('password_error')) {
             psw_msg.innerHTML = params.get('password_error');
             username.value = params.get('username'); // Sticky username
-            alert(params.get('password_error')); // If there is a password error, alert with password error
+            alert(params.get('password_error')); // Tell user if their password is invalid
         }
     </script>

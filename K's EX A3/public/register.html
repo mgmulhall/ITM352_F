@@ -1,11 +1,11 @@
 <script>
     // Author: Krizel T & Maggie M
     // Date: 12/8/2021
-    // This file is out registration page
-    /* https://www.w3schools.com/howto/howto_css_register_form.asp */
+    // This file is our registration page
+    // Learned from Lab 14,15 and https://www.w3schools.com/howto/howto_css_register_form.asp //
     </script>
     <script src="./navbar.js" type="text/javascript">
-        // This links it to navbar
+        // This links it to navbar page
     </script>  
     <!DOCTYPE html>
     <html lang="en">
@@ -17,7 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register Page</title>
         <script type="text/javascript">
-            //refrences nav bar
+            //calls nav bar
             navbar();
         </script>
         <hr class="w3-border-grey" style="margin:auto;width:40%"> 
@@ -25,6 +25,8 @@
     
     <body>
         <script>
+//CREATES REGISTER FORM
+//Requires new memebers to input fullname, username, email address, password, and password confirmation
             document.write(`
         <form action="process_register${location.search}" method="post">`);
         </script>
@@ -60,7 +62,7 @@
     
         <div class="container signin">
             <script>
-                // If user clicks on registration page but already has an account, allow them to log in
+//IF USER CLICKS ON REGISTRATION PAGE BUT ALREADY HAS AN ACCOUNT, ALLOW THEM TO LOGIN
                 document.write(`<p>Been Here Before? <a href="./login.html${location.search}">Sign in here</a>.</p>`);
             </script>
         </div>
@@ -69,39 +71,40 @@
     
     </html>
     <script>
+//REGISTRATION VALIDATION
         let params = (new URL(document.location)).searchParams;
+        //If there are errors in login form, keep inputs for valid fullnames, usernames and emails, and make the user register again
         if (params.has('errors')) {
-            fullname.value = params.get('fullname'); // Sticky name
+            fullname.value = params.get('fullname'); // Sticky fullname
             username.value = params.get('username'); // Sticky username
             email.value = params.get('email'); // Sticky email
             var errors = params.get('errors').split(';');
-            //validation of registraition
             for (error_msg of errors) { 
-                if (error_msg == 'Username taken') {
+                if (error_msg == 'Username taken') {//Each user needs a unique username
                     username_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Only letter characters allowed for Full Name') {
+                if (error_msg == 'Only letter characters allowed for Full Name') {//Names can only contail letters
                     name_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Full Name must contain Maximum 30 Characters') {
+                if (error_msg == 'Full Name must contain a maximum 30 characters.') {//Names can't be longer than 30 characters
                     name_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Username must contain at least 4 characters and a maximum of 10 characters') {
+                if (error_msg == 'Username must contain at least 4 characters and a maximum of 10 characters'){//Usernames must have between 4 and 10 characters
                     username_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Only Letters And Numbers Allowed for Username') {
+                if (error_msg == 'Only Letters And Numbers Allowed for Username') {//Usernames can only contain numbers and letters
                     username_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Must enter a valid email (username@mailserver.domain).') {
+                if (error_msg == 'Must enter a valid email (username@mailserver.domain).') {//Email must be in xxx@xxx.com format
                     email_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Password Minimum 6 Characters') {
+                if (error_msg == 'Password Minimum 6 Characters') {//Passwords must be 6 characters or longer
                     password_msg.innerHTML = error_msg;
                 }
-                if (error_msg == 'Passwords Do Not Match') {
+                if (error_msg == 'Passwords Do Not Match') {//Password and password conformation must match
                     repeat_password_msg.innerHTML = error_msg;
                 }
             };
-            alert('Probelm(s) found:\n' + errors.join('\n')); // If there are any of these error messages, alert and show error next to area of error
+            alert('Probelm(s) found:\n' + errors.join('\n')); // If there are any of these error messages, tell the user where in the registration form they entered something invalid
         }
     </script>

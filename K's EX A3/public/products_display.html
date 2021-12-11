@@ -7,12 +7,12 @@
     // Borrowed and modified code from Lab 13, 14 + Alyssa Mencel Assignment 2 
   </script>
   <script src="./navbar.js" type="text/javascript">
-    // This links it to my navbar.js
+    // This links it to our navbar.js
   </script>
   <script>
      var products_data=
     loadJSON('get_products_data', function (response) {
-      // Parsing JSON string of products into object
+      // Parsing JSON string of products into java script object
       allproducts = JSON.parse(response);
     });
     
@@ -20,10 +20,10 @@
     var this_product_key = params.get("product_key");
     var products = allproducts[this_product_key];
     window.onload = function () {
-      if (params.has('submitPurchase')) { // Check if there is qty data to check
+      if (params.has('submitPurchase')) { // Check if there is quantity data to check
         // Check if all qtys pass non neg integer test
-        var haserrors = false;
-        var hasquantities = false;
+        var haserrors = false; //Assume no errors with requested quantities 
+        var hasquantities = false;//Assume there are not quantities entered yet
         for (i = 0; i < products.length; i++) {
           if (params.has(`quantity${i}`)) {
             a_qty = params.get(`quantity${i}`); // Gets data from query string
@@ -31,65 +31,66 @@
             product_form[`quantity${i}`].value = a_qty;
             checkQuantityTextbox(product_form[`quantity${i}`]);
             if (isNonNegInt(a_qty) == false) {
-              haserrors = true;
+              haserrors = true; // If the entered quantity does not pass the is non neg integer test, reassign haserrors variable to true
             }
             if (a_qty > 0) {
-              hasquantities = true;
+              hasquantities = true; //If a positive number is entered, reassign hasquantities variable to true
             }
           }
         }
-        // If errors, give alert. If no errors, send to invoice with data.
+        // If there are errors, give alert
         if (haserrors) {
-          alert("Please enter valid quantities."); // If user submits with invalid quantites, alert with reason
+          alert("Please enter valid quantities."); 
         }
+        //If there are no quantities entered, give alert
         else if (hasquantities == false) {
-          alert("Please select a product."); // If user submits with 0 quantites, alert with reason
+          alert("Please select a product.");
         }
+        //If no errors and has quantities, send user to login with information
         else {
-          location.href = "./login.html" + location.search; // All good, send to login
+          location.href = "./login.html" + location.search;
         }
       }
     };
 
-    // Took functions (isNonNegInt & checkQuantityTextbox) from Lab 11 & 12, but adjusted to meet my webpage's requirements
-    function isNonNegInt(q, return_errors = false) { // Checks if the values input are a positive integer
+    // isNonNegInt and checkQuantityTextbox functions adapted from Lab 11 & 12
+    function isNonNegInt(q, return_errors = false) { 
       errors = []; // Initially assumes there are no errors
-      if (q == ''); // If the input is "blank", set the value to 0 
-      if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // Check if string is a number value. If not, send error with reason.
-      else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // Check if string is non-negative. If not, send error with reason.
-      else if (q < a_qty) errors.push('<font color="red">Not Enough in Stock!</font>');// check is requested quanity is in stock. If not, send error with reason.
-      else if (q == 0) errors.push('<font color="red">Please Select At Least One Item To Add To Cart!</font>');
-      else if (parseInt(q) != q) errors.push('<font color="red">Not an integer</font>'); // Check that it is an integer. If not, send error with reason.
+      if (q == ''); // If nothing is imputed, default value of 0 
+      if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // If quantity entered is not a number, tell user.
+      else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // If quantity entered is a negative number, tell user.
+      else if (parseInt(q) != q) errors.push('<font color="red">Not an integer</font>'); // If quantity entered is not an integer, tell user.
       return return_errors ? errors : (errors.length == 0);
     }
-    function checkQuantityTextbox(theTextbox) { // Checks qty txt box using isNonNegInt function
-      errs = isNonNegInt(theTextbox.value, true); // Calls isNonNegInt function
+    function checkQuantityTextbox(theTextbox) { //Check if quantity entered passes the is non neg integer test
+      errs = isNonNegInt(theTextbox.value, true); // Calls is Non Neg Integer function
       document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
     }
   </script>
   <script>
-    // Modified increase & decrease buttons from Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv then received help from Professor Port to adjust and tweak
-    // Function for increase button to increase quantity
+    // Function for increase button to increase quantity 
+    // Adapted from Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv
     function increaseValue(field) {
       var value = parseInt(product_form[field].value);
       value = isNaN(value) ? 0 : value;
       value++; // Increment value by 1
-      product_form[field].value = value; // Set the value
+      product_form[field].value = value; // Set the value equal to value in quantity ordered text box
     }
   
     // Function for decrease button to decrease quantity
     function decreaseValue(field) {
       var value = parseInt(product_form[field].value);
       value = isNaN(value) ? 0 : value;
-      if (value > 0) { // Will not allow user to decrement value below 0
+      if (value > 0) { // Value must be greater than zero
         value--;
       } // Decrement value by 1
-      product_form[field].value = value; // Set the value
+      product_form[field].value = value; // Set the value equal to value in quantity ordered text box
     }
-    // Function to request server to add product at index i to the shopping cart
+    
+    //Add to shopping cart, function called in server
     function addtocart(prod_index) {
       console.log({ "prod_type": this_product_key, "prod_index": prod_index, "prod_qty": product_form[`quantity${prod_index}`].value }); // Get value from textbox
-      (async () => { // Borrowed and modified code https://stackoverflow.com/questions/29775797/fetch-post-json-data
+      (async () => { // adapted from https://stackoverflow.com/questions/29775797/fetch-post-json-data
         const rawResponse = await fetch('./add_to_cart', {
           method: 'POST',
           headers: {
@@ -105,7 +106,7 @@
     }
   
       //function to get cookie
-      //from Lab 15 and https://stackoverflow.com/questions/47403321/decodeduricomponent-in-javascript-getcookie-function
+      //from Lab 15, Noah Kim Assignment 3 & https://stackoverflow.com/questions/47403321/decodeduricomponent-in-javascript-getcookie-function
       function getCookie(cname) {
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
@@ -133,16 +134,15 @@
     <link rel="stylesheet" href="stylesheets/products-style.css">
     </script>
     <script type="text/javascript">
-      // This calls my Navbar from my navbar.js file
+      // This calls our navbar
       navbar();
     </script>
   </head>
   
   <body>
-    <!-- Took a few style elements from w3 schools CSS clothing store template https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_clothing_store&stacked=h-->
-    <!-- Took a few  elements from SmartPhoneProducts3-->
+    <!-- Adapted from from SmartPhoneProducts3, our Assignmnet 2 and w3 schoolshttps://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_clothing_store&stacked=h-->
     <header>
-      <!-- Header logo & Store name (from w3 css clothing store template)-->
+      <!-- Set font and background image-->
       <p class="hdrleft"><img src="images/background.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
         <script>
           if (getCookie('user_info') != false) {
@@ -155,20 +155,19 @@
         </script>
         <i style="float:right; font-size: xx-large; padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"> You Hungry? Please Choose From The Menu Above! Scoll to see options!</i></p>
     </header>
-    <!-- Image header (from w3 css clothing store template)-->
     <div class="imghdr">
       <img src="images/coffeeshop.png" alt="KBProducts" style="width:60%">
       <div class="hdrtxt" style="padding:24px 48px">
       </div>
     </div>
   
-    <!-- Opens up form tag that will be used to collect user input to be submitted and used for their invoice-->
+    <!-- Calls add to cart function-->
     <form action="/add_to_cart" name="product_form" method="POST">
       <div>
         <main>
           <script>
             for (i = 0; i < products.length; i++) {
-              // Retrieved and Modified code from SmartPhoneProducts3, added short caption to each product //
+              // Adapted from SmartPhoneProducts3 and Mark Chou A3 and adjusted to import quantities//
               document.write(`
           <section class="item"> 
           <!-- Load in product image -->
@@ -181,7 +180,7 @@
           <!-- Load in product price -->
           <h4><p>$${(products[i].price).toFixed(2)}</p></h4>
           <p><label>Quantity</label>
-          <div class="product-actions__quantity"> <!-- modified increase & decrease buttons from Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv -->
+          <div class="product-actions__quantity"> <!--Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv -->
             <div class="action-qty">
               <!-- Decrease quantity button -->
               <span class="button"  onclick="decreaseValue('quantity${i}')">-</span>
@@ -192,8 +191,9 @@
               +</span>
             </div>
           </div>
-          <div id="quantity${i}_label"> <!-- Allows computer to know which product actions apply to which products -->
+          <div id="quantity${i}_label"> <!-- identify which product we're refrencing -->
           </div></p>
+          <!-- add to cart form-->
           <input type="button" onclick="addtocart(${i});" value="Add to cart" name="submitPurchase" class="add_cart">
           </div>
           
