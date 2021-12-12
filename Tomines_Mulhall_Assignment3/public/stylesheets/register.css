@@ -1,0 +1,88 @@
+/* Author: Krizel T and Maggie M */
+/* Date: 05/13/2021 */
+/* Style registration page */ 
+/* Adapted from w3 schools https://www.w3schools.com/howto/howto_css_register_form.asp */
+/* Adapted from MDN Web Docs */ 
+
+/* GENERAL */
+body {
+  width: 800px;
+  margin: 0 auto;
+  background-image: url("../images/background.png");
+  background-repeat: repeat;
+  background-position: center;
+  background-size: auto;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+* {box-sizing: border-box}
+
+/* adds padding to containers */
+.container {
+  padding: 16px;
+}
+
+/* input boxes */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit/register button */
+.registerbtn {
+  height: 5%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, pink, white)
+
+}
+
+.registerbtn:hover {
+        /* transform: scale(0.99); */
+        background: linear-gradient(135deg, white, pink)  }
+        @media(max-width: 584px){
+        .container{
+         max-width: 100%;
+       }
+       form .user-details .input-box{
+           margin-bottom: 15px;
+           width: 100%;
+         }
+         form .category{
+           width: 100%;
+         }
+     .main span{
+         position: relative;
+     } }
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  text-align: center;
+}
