@@ -3,6 +3,7 @@
 /* This file is the stylesheet I used to style my shopping cart */ 
 /* Modified from W3 schools sample invoice css template */
 
+/* PERSONALIZATION */
 .completePurchasediv {
   width: 100%;
   padding: 12px 20px;
@@ -18,7 +19,7 @@ text-align: center;
   margin-right: auto;
 }
 
-/* Shipping Policy */
+/* SHIPPING POLICY */
 .policy {
   margin-left: auto;
   margin-right: auto;
@@ -27,7 +28,7 @@ text-align: center;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-/* Table for invoice */
+/* INVOICE TABLE */
 table {
   background-color: rgba(255, 255, 255, 0.925);
   text-align: center;
@@ -35,18 +36,18 @@ table {
   margin-right: auto;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-/* Image/Text Header */
+/* IMAGE & TEXT HEADER */
 .hdrtxt {
   background-color: rgba(255, 255, 255, 0.925);
 }
 
-/* Image header */
+/* IMAGE HEADER */
 .imghdr {
   border-style: double;
   border-width: 2px;
 }
 
-/* Quantity text box */
+/* QTY TEXT BOX */
 .qtytxtbox {
   text-align: center;
   border-left: 1px;
@@ -54,11 +55,12 @@ table {
   background-color: rgba(255, 255, 255, 0.37);
 }
 
-/* Total Items */
+/* TOTAL ITEMS */
 .totalitms {
   border-style: hidden;
 }
-/* General */
+
+/* GENERAL */
 body {
     width: 800px;
     margin: 0 auto;
@@ -67,33 +69,35 @@ body {
     background-position: center;
     background-size: auto;
 }
-/* Typography */   
+/* TYPOGRAHY */   
 h1,h2,h3,h4 {
     text-align: center;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 
 }
 
-/* Form styling */
+/* FORM STYLING */
 main {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     color: black;
 }    
-/* Styling the products display */
+/* PRODUCTS DISPLAY */
 .item img {
     width: 300px;
     height: auto;
 }
 
-/* Shadow when user hovers over item */
+/* HOVER */
 .item:hover {
   box-shadow: 0 0 5px 1px black;
 }
 
 
-/* add one/ remove one from cart: https://codepen.io/mtbroomell/pen/yNwwdv */
+/* BUTTONS TO ADD/REMOVE QTYS */
+/* Borrowed & Modified from Codepen.io: Mt Bromell  */
+
   .value-button {
     display: inline-block;
     border: 1px solid #ddd;
@@ -106,7 +110,7 @@ main {
     background: #eee;
   }
 
-  /* arrange product pictures */
+  /* ARRANGE PRODUCT PICTURES */
   section {
     width: 300%;
     margin: 5px;
@@ -114,6 +118,7 @@ main {
     height: auto;
   }
 
+  /* BUTTONS */
   input[type=button] {
     height: 5%;
     width: 100%;

@@ -3,7 +3,7 @@
 /* This file is the stylesheet I used to style my login */ 
 /* Borrowed and modified css from w3 schools https://www.w3schools.com/howto/howto_css_login_form.asp */
 
-/* General */
+/* GENERAL */
 body {
   width: 800px;
   margin: 0 auto;
@@ -14,12 +14,12 @@ body {
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-/* Bordered form */
+/* FORM BORDER */
 form {
     border: 3px solid #f1f1f1;
   }
   
-  /* Full-width inputs */
+/* WIDTH INPUTS */
   input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
@@ -29,7 +29,7 @@ form {
     box-sizing: border-box;
   }
   
-  /* Set a style for all buttons */
+/* BUTTONS */
   button {
   height: 5%;
   width: 100%;
@@ -45,7 +45,7 @@ form {
 
   }
   
-  /* Changes gradient for button when hovering */
+  /* BUTTONS HOVER */
   button:hover {
         /* transform: scale(0.99); */
   background: linear-gradient(135deg, white, pink)  }
@@ -66,7 +66,7 @@ form {
   
 
   
-  /* Center image inside this container */
+/* IMAGES */
   .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
@@ -77,13 +77,12 @@ form {
     border-radius: 50%;
   }
   
-  /* Add padding to containers */
+/* PADDING FOR CONTAINERS */
   .container {
     padding: 16px;
   }
   
-
-  /* Set a grey background color and center the text of the "register" section */
+/* CENTERING */
 .register {
   text-align: center;
 }

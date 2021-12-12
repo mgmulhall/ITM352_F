@@ -2,13 +2,15 @@
 /* Date: 12/08/2021 */
 /* Styles navigation bar*/ 
 
+/* GENERAL */
+/* makes navbar stay in place when scrolling */
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: rgb(255, 255, 255);
-    position: sticky; /* makes navbar stay in place when scrolling */
+    position: sticky; 
     top: 0;
     width: 100%;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -24,7 +26,8 @@ li a {
     padding: 20px 20px;
     text-decoration: none;
 }
-/* makes buttons purple when hovering */ 
+
+/* BUTTON HOVER */ 
 li a:hover:not(.active) {
     background-color: pink;
 }
