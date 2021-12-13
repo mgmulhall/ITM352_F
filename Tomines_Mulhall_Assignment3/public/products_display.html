@@ -1,209 +1,209 @@
 <script>
-    // Author: Krizel T & Maggie M
-    // Date: 12/8/2021
-    // Modified from our assignment 2
-    // Displays all products by type using nav bar
-    // users can add items to cart
-    // Borrowed and modified code from Lab 13, 14 + Alyssa Mencel Assignment 2 
-  </script>
-  <script src="./navbar.js" type="text/javascript">
-    // This links it to our navbar.js
-  </script>
-  <script>
-     var products_data=
-    loadJSON('get_products_data', function (response) {
-      // Parsing JSON string of products into java script object
-      allproducts = JSON.parse(response);
-    });
-    
-    let params = (new URL(document.location)).searchParams; // Get data from form to create invoice
-    var this_product_key = params.get("product_key");
-    var products = allproducts[this_product_key];
-    window.onload = function () {
-      if (params.has('submitPurchase')) { // Check if there is quantity data to check
-        // Check if all qtys pass non neg integer test
-        var haserrors = false; //Assume no errors with requested quantities 
-        var hasquantities = false;//Assume there are not quantities entered yet
-        for (i = 0; i < products.length; i++) {
-          if (params.has(`quantity${i}`)) {
-            a_qty = params.get(`quantity${i}`); // Gets data from query string
-            // Data from qty text box and put back into text box (sticky)
-            product_form[`quantity${i}`].value = a_qty;
-            checkQuantityTextbox(product_form[`quantity${i}`]);
-            if (isNonNegInt(a_qty) == false) {
-              haserrors = true; // If the entered quantity does not pass the is non neg integer test, reassign haserrors variable to true
-            }
-            if (a_qty > 0) {
-              hasquantities = true; //If a positive number is entered, reassign hasquantities variable to true
-            }
+  // Author: Krizel T & Maggie M
+  // Date: 12/8/2021
+  // Modified from our assignment 2
+  // Displays all products by type using nav bar
+  // users can add items to cart
+  // Borrowed and modified code from Lab 13, 14 + Alyssa Mencel Assignment 2 
+</script>
+<script src="./navbar.js" type="text/javascript">
+  // This links it to our navbar.js
+</script>
+<script>
+   var products_data=
+  loadJSON('get_products_data', function (response) {
+    // Parsing JSON string of products into java script object
+    allproducts = JSON.parse(response);
+  });
+  
+  let params = (new URL(document.location)).searchParams; // Get data from form to create invoice
+  var this_product_key = params.get("product_key");
+  var products = allproducts[this_product_key];
+  window.onload = function () {
+    if (params.has('submitPurchase')) { // Check if there is quantity data to check
+      // Check if all qtys pass non neg integer test
+      var haserrors = false; //Assume no errors with requested quantities 
+      var hasquantities = false;//Assume there are not quantities entered yet
+      for (i = 0; i < products.length; i++) {
+        if (params.has(`quantity${i}`)) {
+          a_qty = params.get(`quantity${i}`); // Gets data from query string
+          // Data from qty text box and put back into text box (sticky)
+          product_form[`quantity${i}`].value = a_qty;
+          checkQuantityTextbox(product_form[`quantity${i}`]);
+          if (isNonNegInt(a_qty) == false) {
+            haserrors = true; // If the entered quantity does not pass the is non neg integer test, reassign haserrors variable to true
+          }
+          if (a_qty > 0) {
+            hasquantities = true; //If a positive number is entered, reassign hasquantities variable to true
           }
         }
-        // If there are errors, give alert
-        if (haserrors) {
-          alert("Please enter valid quantities."); 
-        }
-        //If there are no quantities entered, give alert
-        else if (hasquantities == false) {
-          alert("Please select a product.");
-        }
-        //If no errors and has quantities, send user to login with information
-        else {
-          location.href = "./login.html" + location.search;
-        }
       }
-    };
+      // If there are errors, give alert
+      if (haserrors) {
+        alert("Please enter valid quantities."); 
+      }
+      //If there are no quantities entered, give alert
+      else if (hasquantities == false) {
+        alert("Please select a product.");
+      }
+      //If no errors and has quantities, send user to login with information
+      else {
+        location.href = "./login.html" + location.search;
+      }
+    }
+  };
 
-    // isNonNegInt and checkQuantityTextbox functions adapted from Lab 11 & 12
-    function isNonNegInt(q, return_errors = false) { 
-      errors = []; // Initially assumes there are no errors
-      if (q == ''); // If nothing is imputed, default value of 0 
-      if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // If quantity entered is not a number, tell user.
-      else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // If quantity entered is a negative number, tell user.
-      else if (parseInt(q) != q) errors.push('<font color="red">Not an integer</font>'); // If quantity entered is not an integer, tell user.
-      return return_errors ? errors : (errors.length == 0);
-    }
-    function checkQuantityTextbox(theTextbox) { //Check if quantity entered passes the is non neg integer test
-      errs = isNonNegInt(theTextbox.value, true); // Calls is Non Neg Integer function
-      document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
-    }
-  </script>
-  <script>
-    // Function for increase button to increase quantity 
-    // Adapted from Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv
-    function increaseValue(field) {
-      var value = parseInt(product_form[field].value);
-      value = isNaN(value) ? 0 : value;
-      value++; // Increment value by 1
-      product_form[field].value = value; // Set the value equal to value in quantity ordered text box
-    }
+  // isNonNegInt and checkQuantityTextbox functions adapted from Lab 11 & 12
+  function isNonNegInt(q, return_errors = false) { 
+    errors = []; // Initially assumes there are no errors
+    if (q == ''); // If nothing is imputed, default value of 0 
+    if (Number(q) != q) errors.push('<font color="red">Not a number!</font>'); // If quantity entered is not a number, tell user.
+    else if (q < 0) errors.push('<font color="red">Negative value!</font>'); // If quantity entered is a negative number, tell user.
+    else if (parseInt(q) != q) errors.push('<font color="red">Not an integer</font>'); // If quantity entered is not an integer, tell user.
+    return return_errors ? errors : (errors.length == 0);
+  }
+  function checkQuantityTextbox(theTextbox) { //Check if quantity entered passes the is non neg integer test
+    errs = isNonNegInt(theTextbox.value, true); // Calls is Non Neg Integer function
+    document.getElementById(theTextbox.name + '_label').innerHTML = errs.join(", ");
+  }
+</script>
+<script>
+  // Function for increase button to increase quantity 
+  // Adapted from Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv
+  function increaseValue(field) {
+    var value = parseInt(product_form[field].value);
+    value = isNaN(value) ? 0 : value;
+    value++; // Increment value by 1
+    product_form[field].value = value; // Set the value equal to value in quantity ordered text box
+  }
+
+  // Function for decrease button to decrease quantity
+  function decreaseValue(field) {
+    var value = parseInt(product_form[field].value);
+    value = isNaN(value) ? 0 : value;
+    if (value > 0) { // Value must be greater than zero
+      value--;
+    } // Decrement value by 1
+    product_form[field].value = value; // Set the value equal to value in quantity ordered text box
+  }
   
-    // Function for decrease button to decrease quantity
-    function decreaseValue(field) {
-      var value = parseInt(product_form[field].value);
-      value = isNaN(value) ? 0 : value;
-      if (value > 0) { // Value must be greater than zero
-        value--;
-      } // Decrement value by 1
-      product_form[field].value = value; // Set the value equal to value in quantity ordered text box
-    }
-    
-    //Add to shopping cart, function called in server
-    function addtocart(prod_index) {
-      console.log({ "prod_type": this_product_key, "prod_index": prod_index, "prod_qty": product_form[`quantity${prod_index}`].value }); // Get value from textbox
-      (async () => { // adapted from https://stackoverflow.com/questions/29775797/fetch-post-json-data
-        const rawResponse = await fetch('./add_to_cart', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ "prod_type": this_product_key, "prod_index": prod_index, "prod_qty": product_form[`quantity${prod_index}`].value })
-        });
-        const content = await rawResponse.json();
-  
-        alert(content["status"]);
-      })();
-    }
-  
-      //function to get cookie
-      //from Lab 15, Noah Kim Assignment 3 & https://stackoverflow.com/questions/47403321/decodeduricomponent-in-javascript-getcookie-function
-      function getCookie(cname) {
-      var name = cname + "=";
-      var decodedCookie = decodeURIComponent(document.cookie);
-      var ca = decodedCookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
+  //Add to shopping cart, function called in server
+  function addtocart(prod_index) {
+    console.log({ "prod_type": this_product_key, "prod_index": prod_index, "prod_qty": product_form[`quantity${prod_index}`].value }); // Get value from textbox
+    (async () => { // adapted from https://stackoverflow.com/questions/29775797/fetch-post-json-data
+      const rawResponse = await fetch('./add_to_cart', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "prod_type": this_product_key, "prod_index": prod_index, "prod_qty": product_form[`quantity${prod_index}`].value })
+      });
+      const content = await rawResponse.json();
+
+      alert(content["status"]);
+    })();
+  }
+
+    //function to get cookie
+    //from Lab 15, Noah Kim Assignment 3 & https://stackoverflow.com/questions/47403321/decodeduricomponent-in-javascript-getcookie-function
+    function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
       }
-      return false;
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
     }
+    return false;
+  }
+</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta brand="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Krizel and Maggie's Boba Shop</title>
+  <link rel="stylesheet" href="stylesheets/navbar.css">
+  <link rel="stylesheet" href="stylesheets/products-style.css">
   </script>
-  <!DOCTYPE html>
-  <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8">
-    <meta brand="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krizel and Maggie's Boba Shop</title>
-    <link rel="stylesheet" href="stylesheets/navbar.css">
-    <link rel="stylesheet" href="stylesheets/products-style.css">
-    </script>
-    <script type="text/javascript">
-      // This calls our navbar
-      navbar();
-    </script>
-  </head>
-  
-  <body>
-    <!-- Adapted from from SmartPhoneProducts3, our Assignmnet 2 and w3 schoolshttps://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_clothing_store&stacked=h-->
-    <header>
-      <!-- Set font and background image-->
-      <p class="hdrleft"><img src="images/background.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
-        <script>
-          if (getCookie('user_info') != false) {
-            var user_info = JSON.parse(getCookie('user_info'));
-            console.log(user_info);
-            document.write(`Welcome, ${user_info["name"]}`); // If the user has a cookie called "user_info", welcome them by name
-          } else {
-            document.write(`User not logged in`); // If the user does not have a cookie called "user_info", display not logged in msg
-          };
-        </script>
-        <i style="float:right; font-size: xx-large; padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"> You Hungry? Please Choose From The Menu Above! Scoll to see options!</i></p>
-    </header>
-    <div class="imghdr">
-      <img src="images/coffeeshop.png" alt="KBProducts" style="width:60%">
-      <div class="hdrtxt" style="padding:24px 48px">
-      </div>
+  <script type="text/javascript">
+    // This calls our navbar
+    navbar();
+  </script>
+</head>
+
+<body>
+  <!-- Adapted from from SmartPhoneProducts3, our Assignmnet 2 and w3 schoolshttps://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_templates_clothing_store&stacked=h-->
+  <header>
+    <!-- Set font and background image-->
+    <p class="hdrleft"><img src="images/background.png" width="5%" height="auto" style="padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+      <script>
+        if (getCookie('user_info') != false) {
+          var user_info = JSON.parse(getCookie('user_info'));
+          console.log(user_info);
+          document.write(`Welcome, ${user_info["name"]}`); // If the user has a cookie called "user_info", welcome them by name
+        } else {
+          document.write(`User not logged in`); // If the user does not have a cookie called "user_info", display not logged in msg
+        };
+      </script>
+      <i style="float:right; font-size: xx-large; padding:10px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"> You Hungry? Please Choose From The Menu Above! Scroll to see options!</i></p>
+  </header>
+  <div class="imghdr">
+    <img src="images/coffeeshop.png" alt="KBProducts" style="width:60%">
+    <div class="hdrtxt" style="padding:24px 48px">
     </div>
-  
-    <!-- Calls add to cart function-->
-    <form action="/add_to_cart" name="product_form" method="POST">
-      <div>
-        <main>
-          <script>
-            for (i = 0; i < products.length; i++) {
-              // Adapted from SmartPhoneProducts3 and Mark Chou A3 and adjusted to import quantities//
-              document.write(`
-          <section class="item"> 
-          <!-- Load in product image -->
-          <div style="border-style: solid; border-width:2px; border-bottom-style:hidden;"><img src="./images/${products[i].image}"></div>
-          <div style="border-style: solid; border-width:2px;">
-          <!-- Load in product name -->
-          <h2>${products[i].product}</h2> 
-          <!-- Load in product quantities available -->
-          <h4><p>${(products[i].quantity_available)} in stock</p></h4>
-          <!-- Load in product price -->
-          <h4><p>$${(products[i].price).toFixed(2)}</p></h4>
-          <p><label>Quantity</label>
-          <div class="product-actions__quantity"> <!--Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv -->
-            <div class="action-qty">
-              <!-- Decrease quantity button -->
-              <span class="button"  onclick="decreaseValue('quantity${i}')">-</span>
-              <!-- Editable textbox for user to be able to type desired quantities -->
-              <input type="text" name="quantity${i}" class="qtytxtbox" value="0" onkeyup="checkQuantityTextbox(this);">
-              <!-- Increase quantity button -->
-              <span class="button"  onclick="increaseValue('quantity${i}')">
-              +</span>
-            </div>
+  </div>
+
+  <!-- Calls add to cart function-->
+  <form action="/add_to_cart" name="product_form" method="POST">
+    <div>
+      <main>
+        <script>
+          for (i = 0; i < products.length; i++) {
+            // Adapted from SmartPhoneProducts3 and Mark Chou A3 and adjusted to import quantities//
+            document.write(`
+        <section class="item"> 
+        <!-- Load in product image -->
+        <div style="border-style: solid; border-width:2px; border-bottom-style:hidden;"><img src="./images/${products[i].image}"></div>
+        <div style="border-style: solid; border-width:2px;">
+        <!-- Load in product name -->
+        <h2>${products[i].product}</h2> 
+        <!-- Load in product quantities available -->
+        <h4><p>${(products[i].quantity_available)} in stock</p></h4>
+        <!-- Load in product price -->
+        <h4><p>$${(products[i].price).toFixed(2)}</p></h4>
+        <p><label>Quantity</label>
+        <div class="product-actions__quantity"> <!--Mark Broomell https://codepen.io/mtbroomell/pen/yNwwdv -->
+          <div class="action-qty">
+            <!-- Decrease quantity button -->
+            <span class="button"  onclick="decreaseValue('quantity${i}')">-</span>
+            <!-- Editable textbox for user to be able to type desired quantities -->
+            <input type="text" name="quantity${i}" class="qtytxtbox" value="0" onkeyup="checkQuantityTextbox(this);">
+            <!-- Increase quantity button -->
+            <span class="button"  onclick="increaseValue('quantity${i}')">
+            +</span>
           </div>
-          <div id="quantity${i}_label"> <!-- identify which product we're refrencing -->
-          </div></p>
-          <!-- add to cart form-->
-          <input type="button" onclick="addtocart(${i});" value="Add to cart" name="submitPurchase" class="add_cart">
-          </div>
-          
-          </section>
-          `);
-            }
-          </script>
-        </main>
-      </div>
-    </form>
-  </body>
-  
-  </html>
+        </div>
+        <div id="quantity${i}_label"> <!-- identify which product we're refrencing -->
+        </div></p>
+        <!-- add to cart form-->
+        <input type="button" onclick="addtocart(${i});" value="Add to cart" name="submitPurchase" class="add_cart">
+        </div>
+        
+        </section>
+        `);
+          }
+        </script>
+      </main>
+    </div>
+  </form>
+</body>
+
+</html>

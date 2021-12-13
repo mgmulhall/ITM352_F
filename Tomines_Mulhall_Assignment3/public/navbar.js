@@ -25,12 +25,13 @@ function navbar() {
     loadJSON('./cart_qty', function (response) {
         // Parsing JSON string into object
         cart_qty = JSON.parse(response);
+        console.log(cart_qty);
     });
 
     document.write(`
     <ul>
-        <li><a href="./products_display.html?product_key=Krave%20Beauty"><img src="images/logo.png" width="10%" height="auto" style="padding:10px"></a></li><br>
-        <li><a href="./invoice.html${location.search}">Check Out-(${cart_qty.qty})In Cart</a></li>
+        <li><a href="./products_display.html?product_key=Boba%">Home</a></li><br>
+        <li><a href="./invoice.html${location.search}">Check Out: ${Number(cart_qty.qty)} In Cart</a></li>
         <li><a href="./login.html${location.search}">Login</a></li>
         <li><a href="./register.html${location.search}">Registration</a></li>
         <li><a href="./logout">Logout</a></li><br>
