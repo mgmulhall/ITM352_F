@@ -271,7 +271,7 @@ app.get("/logout" , function (request, response) {
     if (user_info != undefined){
     var username = user_info["username"]; //checks to see whos logged in
 
-    logout_msg = `<script>alert('${user_info.name} has successfully logged out!'); location.href="./index.html";</script>`;
+    logout_msg = `<script>alert('You've successfully logged out!'); location.href="./index.html";</script>`;
     response.clearCookie('user_info'); //destroys cookie
     response.send(logout_msg); //if logged out, send message 
 
