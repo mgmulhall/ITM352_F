@@ -1,0 +1,88 @@
+/* Author: Kimberly Matutina */
+/* Date: 05/13/2021 */
+/* This file is the stylesheet I used to style my login */ 
+/* Borrowed and modified css from w3 schools https://www.w3schools.com/howto/howto_css_login_form.asp */
+
+/* GENERAL */
+body {
+  width: 800px;
+  margin: 0 auto;
+  background-image: url("../images/background.png");
+  background-repeat: repeat;
+  background-position: center;
+  background-size: auto;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* FORM BORDER */
+form {
+    border: 3px solid #f1f1f1;
+  }
+  
+/* WIDTH INPUTS */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+/* BUTTONS */
+  button {
+  height: 5%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, pink, white);
+
+  }
+  
+  /* BUTTONS HOVER */
+  button:hover {
+        /* transform: scale(0.99); */
+  background: linear-gradient(135deg, white, pink)  }
+  @media(max-width: 584px){
+  .container{
+   max-width: 100%;
+ }
+ form .user-details .input-box{
+     margin-bottom: 15px;
+     width: 100%;
+   }
+   form .category{
+     width: 100%;
+   }
+.main span{
+   position: relative;
+} }
+  
+
+  
+/* IMAGES */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+  
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+/* PADDING FOR CONTAINERS */
+  .container {
+    padding: 16px;
+  }
+  
+/* CENTERING */
+.register {
+  text-align: center;
+}

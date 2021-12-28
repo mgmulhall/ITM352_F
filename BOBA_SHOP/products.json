@@ -1,0 +1,82 @@
+{ 
+    "Boba":[ 
+        {
+            "product": "Rabbit Signature",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "rbtsig.png"
+          },
+          {
+            "product": "Tiramisu Milk Tea",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "tiramisu.png"
+          },
+          {
+            "product": "Queen of Hearts Mojito",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "mojito.png"
+          }
+    ],
+    "Smoothies": [ 
+        {
+            "product": "Cloudy Day",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "cloudyday.png"
+          },
+          {
+            "product": "Sulley's Cloud",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "sulleyscloud.png"
+          },
+          {
+            "product": "Sunny Day",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "sunnyday.png"
+          }
+    ],
+    "Scones": [ 
+        {
+            "product": "Blueberry",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "blueberrywhite.png"
+          },
+          {
+            "product": "Lemon Poppy",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "lemonpoppy.png"
+          },
+          {
+            "product": "Orange",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "orangecran.png"
+          }
+    ],
+    "Ice Cream": [
+        {
+            "product": "Macadamia Nut",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "macnut.png"
+          },
+          {
+            "product": "Strawberry",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "strawberry.png"
+          },
+          {
+            "product": "Blueberry",
+            "quantity_available": 9,
+            "price": 5.00,
+            "image": "blueberry.png"
+          }
+    ]
+}

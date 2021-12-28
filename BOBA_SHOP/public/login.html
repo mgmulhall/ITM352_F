@@ -1,0 +1,76 @@
+<script>
+    // Author: Krizel T & Maggie M
+    // Date: 12/8/2021
+    // Modified from our assignment 2 and lab 14
+    // This file is our login page
+    // css from https://www.w3schools.com/howto/howto_css_login_form.asp
+    </script>
+    <script src="./navbar.js" type="text/javascript">
+    </script>  
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <link rel="stylesheet" href="stylesheets/login.css">
+        <link rel="stylesheet" href="stylesheets/navbar.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Page</title>
+        <script type="text/javascript">
+            // Calls nav bar
+            navbar();
+        </script>
+    </head>
+    
+    <body>
+        <script>
+            //CREATE LOGIN FORM
+            //Create login form with titles, username input, passsword input and submit button
+            document.write(`
+        <form action="process_login${location.search}" method="post">`);
+        </script>
+        <div class="imgcontainer">
+            <img src="./images/bakery.png" alt="Avatar" class="avatar">
+        </div>
+        <h1 style="text-align: center;">Login</h1>
+        <p style="text-align: center;">Please enter your username and password.</p>
+        <div class="container">
+            <label for="uname"><b>Username</b></label> 
+            <span id="username_msg" style="color: red;"></span>
+            <input type="text" placeholder="Enter Username" name="username" id = "username" required>
+    
+            <label for="psw"><b>Password</b></label>
+            <span id="psw_msg" style="color: red;"></span>
+            <input type="password" placeholder="Enter Password" name="password" required>
+    
+            <button type="submit">LOGIN</button>
+        </div>
+    
+        <div class="container register">
+         <script>
+             //allows user to register from login page without using the nav bar
+            document.write(` <p>Don't have an account? <a href="./register.html${location.search}">Create one here</a></p>`);
+        </script>  
+          </div>
+    
+        </form>
+    </body>
+    
+    </html>
+
+    <!--LOGIN ERRORS-->
+    <script>
+        let params = (new URL(document.location)).searchParams;
+        //If there is a username error, tell user
+        if (params.has('username_error')) {
+            username_msg.innerHTML = params.get('username_error');
+            username.value = params.get('username'); // Makes username sticky if password is incorrect
+            alert(params.get('username_error')); // Tell user if their username is invalid
+        }
+        //If there is a username error, tell user
+        if (params.has('password_error')) {
+            psw_msg.innerHTML = params.get('password_error');
+            username.value = params.get('username'); // Sticky username
+            alert(params.get('password_error')); // Tell user if their password is invalid
+        }
+    </script>
